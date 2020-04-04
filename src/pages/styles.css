@@ -1,0 +1,66 @@
+ion-item.dark {
+    --border-color: #ffffff38;
+    --color: white;
+    --highlight-background: #eaeaea;
+}
+
+ion-content{
+    --ion-background-color: #494ef7;
+}
+
+.darkBg {
+    background-color: #494EF7;       
+}
+
+.darkLabel {
+    color: white;
+}
+
+.authPage {
+    height: 100%;
+    width: 100%;  
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.authTitle {
+    color: white;
+    
+}
+
+.dataTitle {
+    font-size: 14px !important;
+    font-weight: bold;
+}
+.dataField {
+    font-size: 12px !important;
+}
+.dataSubtitle {
+    font-weight: bold;
+    font-size: 12px !important;
+}
+
+.spinnerCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    height: 50%;
+}
+
+.dashBtnIcon {
+    font-size:  2em;
+}
+.dashBtnText{
+    font-size: 14px !important;
+    margin-top: -10px;
+}
+
+.chatInput > input {
+    padding:10px !important;    
+}
+
+.lastMessage {
+    margin-bottom: 70px !important;
+}

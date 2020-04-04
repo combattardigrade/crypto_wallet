@@ -1,0 +1,7 @@
+{
+  "name": "jiwards",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
