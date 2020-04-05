@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { login } from '../utils/api'
-import { saveToken } from '../actions/auth'
-
 import {
     IonGrid, IonRow, IonCol, IonNote, IonItem, IonIcon,
     IonContent, IonPage, IonTitle, IonToolbar, IonLabel, IonButton,
@@ -11,6 +8,11 @@ import {
 } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons'
 
+// API
+import { signup } from '../utils/api'
+
+// Actions
+import { saveToken } from '../actions/auth'
 
 // Styles
 import './styles-dark.css'
@@ -18,16 +20,17 @@ import './styles-dark.css'
 // Images
 const logo = require('../images/logo.png')
 
+// Libraries
+const emailValidator = require('email-validator')
+
+
 class Signup extends Component {
 
     state = {
         showAlert: false,
         alertMsg: '',
-        alertTitle: ''
-    }
-
-    componentDidMount() {
-
+        alertTitle: '',
+        step: 1,
     }
 
     showAlert = (msg, title) => {
@@ -35,40 +38,54 @@ class Signup extends Component {
     }
 
     goToPage = (page) => {
-        this.props.history.push(page)        
+        this.props.history.push(page)
         return
     }
 
     handleSubmit = async (e) => {
         e.preventDefault()
-
+        const firstName = e.target.firstName.value
+        const lastName = e.target.lastName.value
         const username = e.target.username.value
+        const email = e.target.email.value
         const password = e.target.password.value
+        const rpassword = e.target.rpassword.value
 
-        if (!username || !password) {
-            this.showAlert('Ingresa todos los campos requeridos', 'Error')
+        if (!firstName || !lastName || !username || !email || !password || !rpassword || !password) {
+            this.showAlert('Enter all the required fields', 'Error')
+            return
+        }
+
+        if (!emailValidator.validate(email)) {
+            this.showAlert('Enter a valid email', 'Error')
+            return
+        }
+
+        if (password !== rpassword) {
+            this.showAlert('The passwords do not match', 'Error')
             return
         }
 
         let response
         try {
-            response = await (await login({ username: username, password: password })).json()
+            response = await (await signup({ firstName, lastName, username, email, password, rpassword })).json()
         }
         catch (err) {
             console.log(err)
-            this.showAlert('Ocurrió un error al intentar realizar la acción. Por favor, inténtalo nuevamente.', 'Error')
+            this.showAlert('An error occurred, please try again', 'Error')
             return
         }
 
         if (response.status != 'OK') {
-            this.showAlert('message' in response ? response.message : 'Ocurrió un error al intentar realizar la acción. Por favor, inténtalo nuevamente.', 'Error')
+            this.showAlert('message' in response ? response.message : 'An error occurred, please try again', 'Error')
             return
         }
+
         // save jwt
         this.props.dispatch(saveToken(response.token))
 
-        // redirect to dashboard
-        this.props.history.replace('/dashboard')
+        // redirect to main page
+        this.props.history.replace('/main')
     }
 
     goToSignup = (e) => {
@@ -77,27 +94,34 @@ class Signup extends Component {
     }
 
 
+
     render() {
         return (
             <IonPage>
 
 
-                <IonContent  className="dark">
+                <IonContent className="dark">
                     <div className=' authPage'>
 
                         <form onSubmit={this.handleSubmit} style={{ width: '100%' }} >
                             <div style={{ textAlign: 'center' }}>
-                                <img src={logo} style={{ height: '10em' }} />
+                                <img src={logo} style={{ height: '5em' }} />
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                                 <IonLabel className='authTitle'>SIGN UP</IonLabel>
                             </div>
                             <div style={{ padding: 15 }}>
                                 <IonItem className="dark" lines="full">
+                                    <ion-input type="text" placeholder="First Name" name="firstName"></ion-input>
+                                </IonItem>
+                                <IonItem className="dark" lines="full">
+                                    <ion-input type="text" placeholder="Last Name" name="lastName"></ion-input>
+                                </IonItem>
+                                <IonItem className="dark" lines="full">
                                     <ion-input type="text" placeholder="Username" name="username"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="text" placeholder="Email" name="email"></ion-input>
+                                    <ion-input type="email" placeholder="Email" name="email"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
                                     <ion-input type="password" placeholder="Password" name="password"></ion-input>
@@ -110,21 +134,15 @@ class Signup extends Component {
                             <IonGrid>
                                 <IonRow>
                                     <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                        <ion-button color="light" expand="block" type="submit" >Log In</ion-button>
+                                        <ion-button color="light" expand="block" type="submit" >Sign Up</ion-button>
                                     </IonCol>
                                 </IonRow>
 
-                                <IonRow style={{ marginTop: '5px' }}>
-                                    <IonCol style={{ textAlign: 'center' }}>
-                                        <IonButton fill="clear" >
-                                            <IonNote onClick={this.goToSignup} style={{ fontSize: '0.8em', color: 'white' }}>Forgot your password?</IonNote>
-                                        </IonButton>
-                                    </IonCol>
-                                </IonRow>
+                                
                             </IonGrid>
                         </form>
                         <div slot="fixed" style={{ bottom: '20px', position: 'absolute' }}>
-                            <IonNote onClick={e => {e.preventDefault(); this.goToPage('login')}} style={{ fontSize: '0.8em', color: 'white' }}>Already have an account? Log In</IonNote>
+                            <IonNote onClick={e => { e.preventDefault(); this.goToPage('login') }} style={{ fontSize: '0.8em', color: 'white' }}>Already have an account? Log In</IonNote>
                         </div>
                     </div>
                 </IonContent>

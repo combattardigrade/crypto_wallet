@@ -36,6 +36,7 @@
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-media-capture": "^3.0.3",
     "cordova-plugin-network-information": "^2.0.2",
+    "email-validator": "^2.0.4",
     "google-maps-react": "^2.0.2",
     "ionicons": "^5.0.0",
     "moment": "^2.24.0",

@@ -1,16 +1,11 @@
 import { combineReducers } from 'redux'
 import auth from './auth'
-import device from './device'
-import network from './network'
-import alert from './alert'
+
 import storage from 'redux-persist/lib/storage'
 
-const appReducer = combineReducers({
-    alert,
+const appReducer = combineReducers({    
     auth,
-    device,    
-    network,
-    alert,    
+       
 })
 
 const rootReducer = (state , action) => {    

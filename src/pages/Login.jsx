@@ -44,33 +44,33 @@ class Login extends Component {
     handleSubmit = async (e) => {
         e.preventDefault()
 
-        const username = e.target.username.value
+        const email = e.target.email.value
         const password = e.target.password.value
-
-        if (!username || !password) {
-            this.showAlert('Ingresa todos los campos requeridos', 'Error')
+        
+        if (!email || !password) {
+            this.showAlert('Enter all the required fields', 'Error')
             return
         }
 
         let response
         try {
-            response = await (await login({ username: username, password: password })).json()
+            response = await (await login({ email, password })).json()
         }
         catch (err) {
             console.log(err)
-            this.showAlert('Ocurrió un error al intentar realizar la acción. Por favor, inténtalo nuevamente.', 'Error')
+            this.showAlert('An error occurred, please try again', 'Error')
             return
         }
 
         if (response.status != 'OK') {
-            this.showAlert('message' in response ? response.message : 'Ocurrió un error al intentar realizar la acción. Por favor, inténtalo nuevamente.', 'Error')
+            this.showAlert('message' in response ? response.message : 'An error occurred, please try again', 'Error')
             return
         }
         // save jwt
         this.props.dispatch(saveToken(response.token))
 
         // redirect to dashboard
-        this.props.history.replace('/dashboard')
+        this.props.history.replace('/main')
     }
 
     goToSignup = (e) => {
@@ -85,7 +85,7 @@ class Login extends Component {
 
 
                 <IonContent className="dark">
-                    <div className=' authPage'>
+                    <div className='authPage'>
                         <form onSubmit={this.handleSubmit} style={{ width: '100%' }} >
                             <div style={{ textAlign: 'center' }}>
                                 <img src={logo} style={{ height: '10em' }} />
@@ -96,7 +96,7 @@ class Login extends Component {
                             </div>
                             <div style={{ padding: 15 }}>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="text" placeholder="Email" name="username"></ion-input>
+                                    <ion-input type="email" placeholder="Email" name="email"></ion-input>
                                 </IonItem>
 
                                 <IonItem className="dark" lines="full">

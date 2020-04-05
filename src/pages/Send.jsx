@@ -9,13 +9,10 @@ import {
 } from 'ionicons/icons'
 
 
-class Rankings extends Component {
+class Send extends Component {
+    
     state = {
-
-    }
-
-    ionViewWillEnter() {
-        console.log('test')
+        reason: ''
     }
 
     render() {
@@ -83,4 +80,4 @@ function mapStateToProps({ auth }) {
     }
 }
 
-export default connect(mapStateToProps)(withIonLifeCycle(Rankings))
+export default connect(mapStateToProps)(withIonLifeCycle(Send))
