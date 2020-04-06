@@ -15,11 +15,12 @@ import Send from './Send'
 import Inbox from './Inbox'
 
 // Actions
-import { saveDeviceData } from '../actions/device'
+import { saveUserData } from '../actions/user'
+import { saveTxs } from '../actions/transactions'
 
-// Plugins
-import { Plugins } from '@capacitor/core';
-const { Device } = Plugins;
+// API
+import { getUserData, getTxs } from '../utils/api'
+
 
 class Main extends Component {
     state = {
@@ -27,10 +28,23 @@ class Main extends Component {
     }
 
     ionViewWillEnter() {
-        const { dispatch } = this.props
-        Device.getInfo()
-            .then((info) => {
-                dispatch(saveDeviceData(info))
+        const { token, dispatch } = this.props
+        getUserData({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if(res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveUserData(res.payload))
+                }
+            })
+
+        getTxs({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if(res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveTxs(res.payload))
+                }
             })
     }
 
@@ -55,8 +69,8 @@ class Main extends Component {
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent>
-                    <ion-tabs selectedIndex="2">
+                <IonContent scrollY={false} >
+                    <ion-tabs selectedIndex="2" >
                         <ion-tab tab="tab-wallet">
                             <ion-nav><Wallet /></ion-nav>
                         </ion-tab>
@@ -70,11 +84,11 @@ class Main extends Component {
                             <ion-nav><Inbox /></ion-nav>
                         </ion-tab>
                         <ion-tab-bar slot="bottom">
-                            <ion-tab-button tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Wallet') }}>
+                            <ion-tab-button  tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Wallet') }}>
                                 <IonIcon icon={walletOutline}></IonIcon>
                                 <ion-label>Wallet</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Rankings') }}>
+                            <ion-tab-button  tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Rankings') }}>
                                 <IonIcon icon={trophyOutline}></IonIcon>
                                 <ion-label>Rankings</ion-label>
                             </ion-tab-button>
@@ -82,7 +96,7 @@ class Main extends Component {
                                 <IonIcon icon={sendOutline}></IonIcon>
                                 <ion-label>Send</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Inbox') }}>
+                            <ion-tab-button  tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Inbox') }}>
                                 <IonIcon icon={fileTrayOutline}></IonIcon>
                                 <ion-label>Inbox</ion-label>
                             </ion-tab-button>
@@ -97,10 +111,10 @@ class Main extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, user }) {
     return {
         token: auth.token,
-
+        user,
     }
 }
 

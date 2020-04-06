@@ -49,9 +49,9 @@ class Receive extends Component {
                         <IonGrid>
                             <IonRow>
                                 <IonCol size="9">
-                                    <IonInput type="number" style={{color:'#494ef7', fontSize:'1.5em'}}></IonInput>
+                                    <IonInput type="number" style={{color:'#0033CC', fontSize:'1.5em'}}></IonInput>
                                 </IonCol>
-                                <IonCol size="3" style={{textAlign:'center',paddingTop:'20px',color:'#494ef7'}}>
+                                <IonCol size="3" style={{textAlign:'center',paddingTop:'20px',color:'#0033CC'}}>
                                     <IonLabel>COINS</IonLabel>
                                 </IonCol>
                             </IonRow>

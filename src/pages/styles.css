@@ -5,11 +5,11 @@ ion-item.dark {
 }
 
 ion-content{
-    --ion-background-color: #494ef7;
+    --ion-background-color: #0033CC;
 }
 
 .darkBg {
-    background-color: #494EF7;       
+    background-color: #0033CC;       
 }
 
 .darkLabel {

@@ -1,11 +1,18 @@
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
-
+.ion-color-white {
+  --ion-color-base: white;
+  --ion-color-contrast: #000000;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #cfcfcf;
+  
+  
+}
 /** Ionic CSS Variables **/
 :root {
  
   /** primary **/
-  --ion-color-primary: #494ef7;
+  --ion-color-primary: #0033CC;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;

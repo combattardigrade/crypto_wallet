@@ -1,14 +1,16 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import {
-    IonSpinner, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonIcon, IonButton,
+    IonList, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonIcon, IonButton,
     IonItem, IonLabel, IonTabs, IonTabBar, IonTabButton, IonTab, IonBadge, IonGrid, IonRow, IonCol, IonAlert, withIonLifeCycle, IonNav
 } from '@ionic/react';
+// Icons
 import {
     personCircleOutline, arrowUpOutline, arrowDownOutline, cloudUploadOutline, calendar, personCircle, map, informationCircle
 } from 'ionicons/icons'
+import { MdCallMade, MdCallReceived } from 'react-icons/md'
 
-
+const moment = require('moment')
 
 class Wallet extends Component {
 
@@ -27,6 +29,9 @@ class Wallet extends Component {
     render() {
 
         const { selectedTxType } = this.state
+        const { user, transactions } = this.props
+
+        const balance = 'balances' in user ? parseFloat(user.balances[0].amount) : 0.0
 
         return (
             <Fragment>
@@ -36,21 +41,21 @@ class Wallet extends Component {
                         <IonGrid >
                             <IonRow style={{ marginTop: '0px' }}>
                                 <IonCol style={{ textAlign: 'center' }}>
-                                    <IonLabel style={{ fontSize: '3.2em' }}>4354.23</IonLabel>
+                                    <IonLabel style={{ fontSize: '2.5em' }}>{balance}</IonLabel>
                                 </IonCol>
                             </IonRow>
                             <IonRow>
                                 <IonCol style={{ textAlign: 'center' }}>
-                                    <IonLabel className="walletCoinSymbol">COINS</IonLabel>
+                                    <IonLabel className="walletCoinSymbol">JWS</IonLabel>
                                 </IonCol>
                             </IonRow>
                             <IonRow style={{ marginTop: '20px' }}>
                                 <IonCol style={{ textAlign: 'center' }} size="3" offset="1.5">
-                                    <a className="walletBtn" ><IonIcon icon={arrowUpOutline}></IonIcon></a>
+                                    <a className="walletBtn" ><MdCallMade style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
                                     <IonLabel className="walletBtnSubtitle">Send</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
-                                    <a className="walletBtn" ><IonIcon icon={arrowDownOutline}></IonIcon></a>
+                                    <a className="walletBtn" ><MdCallReceived style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
                                     <IonLabel className="walletBtnSubtitle">Receive</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
@@ -61,7 +66,9 @@ class Wallet extends Component {
                         </IonGrid>
                     </div>
                 </IonItem>
-                <IonItem lines="full">
+
+
+                <IonItem lines="full" color="white">
                     <IonGrid style={{ height: '100%', padding: '0px' }}>
                         <IonRow style={{ height: '100%' }}>
                             <IonCol size="4" style={{ textAlign: 'center' }}>
@@ -76,29 +83,74 @@ class Wallet extends Component {
                         </IonRow>
                     </IonGrid>
                 </IonItem>
+                <div style={{height:'100%',backgroundColor:'white'}}>
+                <div  style={{ height: '45vh', overflow: 'auto'}}>
+                    
+                        {
+                            transactions && Object.values(transactions).length > 0 && user
+                                ?
+                                Object.values(transactions).filter((tx) => {
+                                    let operation = tx.userId === user.id ? 'sent' : 'received'
+                                    if (selectedTxType != operation && selectedTxType != 'all') {
+                                        return false
+                                    }
+                                    return true
+                                })
+                                    .map((tx, index, arr) => {
+                                        
+                                        let operation = tx.userId === user.id ? 'sent' : 'received'
+                                        let username = operation === 'sent' ? user.firstName + ' ' + user.lastName : tx.user.firstName + ' ' + tx.user.lastName
 
-                <IonItem detail button>
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol size="3" style={{textAlign:'center'}}>
-                                <IonIcon style={{fontSize:'48px'}} color="primary" icon={personCircleOutline}></IonIcon>
-                            </IonCol>
-                            <IonCol size="5">
-                                <IonLabel className="txUsername">John Smith</IonLabel>
-                                <IonLabel className="txReason">Job Completed</IonLabel>
-                            </IonCol>
-                            <IonCol size="4" style={{textAlign:'right'}}>
-                                <IonLabel className="txAmount">+1,350 JW</IonLabel>
-                                <IonLabel className="txDate">23/03/2020</IonLabel>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
-                </IonItem>
+                                        return (
+                                            <IonItem color="white" detail button key={tx.id} style={arr.length - 1 == index ? {marginBottom:'30px'} : {}}>
+                                                <IonGrid>
+                                                    <IonRow>
+                                                        <IonCol size="3" style={{ textAlign: 'center' }}>
+                                                            <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
+                                                        </IonCol>
+                                                        <IonCol size="5">
+                                                            <IonLabel className="txUsername">{username}</IonLabel>
+                                                            <IonLabel className="txReason">{tx.reason}</IonLabel>
+                                                            <IonLabel className="txDate">{moment(tx.createdAt).format('DD/MM/YYYY')}</IonLabel>
+                                                        </IonCol>
+                                                        <IonCol size="4" style={{ textAlign: 'right' }}>
+                                                            {
+                                                                operation === 'received'
+                                                                    ?
+                                                                    <IonLabel className="txAmount">+{parseFloat(tx.amount).toFixed(2)} <span>{tx.currency}</span> </IonLabel>
+                                                                    :
+                                                                    <IonLabel className="txAmount" style={{ color: 'red' }}>-{parseFloat(tx.amount).toFixed(2)} <span>{tx.currency}</span></IonLabel>
+                                                            }
+                                                            <IonLabel className="txDate">{operation === 'received' ? 'Payment Received' : 'Payment Sent'}</IonLabel>
+                                                        </IonCol>
+                                                    </IonRow>
+                                                </IonGrid>
+                                            </IonItem>
+                                        )
+                                    })
+                                :
+                                null
 
+                        }
+
+                        
+
+                        
+
+                </div>
+                </div>
 
             </Fragment>
         )
     }
 }
 
-export default withIonLifeCycle(Wallet)
+function mapStateToProps({ auth, user, transactions }) {
+    return {
+        token: auth.token,
+        user,
+        transactions,
+    }
+}
+
+export default connect(mapStateToProps)(withIonLifeCycle(Wallet))
