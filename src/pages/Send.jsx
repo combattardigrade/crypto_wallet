@@ -19,16 +19,17 @@ class Send extends Component {
         showAlert: false,
         alertTitle: '',
         alertMsg: '',
-        to: '',
+        contact: '',
         amount: '',
         reason: '',
         descripion: '',
+        selectedContact: ''
     }
 
-    handleToChange = (e) => {
+    handleContactChange = (e) => {
         e.preventDefault()
-        const to = e.detail.value
-        this.setState({ to })
+        const contact = e.detail.value
+        this.setState({ contact })
     }
 
     handleAmountChange = (e) => {
@@ -51,20 +52,27 @@ class Send extends Component {
 
     handleVerifyBtn = (e) => {
         e.preventDefault()
-        const { to, amount, reason, description } = this.state
-        const { user, history, dispatch } = this.props
+        const { contact, amount, reason, description } = this.state
+        const { user, contacts, history, dispatch } = this.props
 
-        if (!to || !amount || !reason || !description) {
+        if (!contact || !amount || !reason || !description) {
             this.showAlert('Enter all the required fields', 'Error')
             return
         }
-        
-        if(parseFloat(user.balances[0].amount) < amount) {
+
+        if (parseFloat(user.balances[0].amount) < amount) {
             this.showAlert('You do not have enough balance', 'Error')
             return
         }
+
+        if(isNaN(amount) || amount < 0) {
+            this.showAlert('Enter a valid amount', 'Error')
+            return
+        }
+
+        let contactDetails = Object.values(contacts).filter(c => c.contactId == contact)
         
-        const transfer = { to, amount, reason, description }
+        const transfer = { contact: contactDetails[0], amount, reason, description }
         dispatch(saveTransfer(transfer))
         history.push('/confirmTx')
     }
@@ -75,14 +83,25 @@ class Send extends Component {
 
     render() {
 
-        const { txReasons } = this.props
+        const { txReasons, contacts } = this.props
 
         return (
             <Fragment>
                 <IonList>
                     <IonItem>
                         <IonLabel position="stacked">Send To</IonLabel>
-                        <IonInput name="to" value={this.state.to} onIonChange={this.handleToChange} type="text" placeholder="Username or Email"></IonInput>
+                        {/* <IonInput name="to" value={this.state.to} onIonChange={this.handleToChange} type="text" placeholder="Username or Email"></IonInput> */}
+                        <IonSelect value={this.state.contact} name="contact" placeholder="Select a contact" onIonChange={this.handleContactChange}>
+                            {
+                                contacts && Object.values(contacts).length > 0
+                                ?
+                                Object.values(contacts).map((contact, index) => (
+                                    <IonSelectOption  key={index} value={contact.contactId}>{contact.firstName + ' ' + contact.lastName}</IonSelectOption>
+                                ))
+                                :
+                                null
+                            }
+                        </IonSelect>
                     </IonItem>
                     <IonItem>
                         <IonLabel position="stacked">Amount</IonLabel>
@@ -118,30 +137,7 @@ class Send extends Component {
                     </IonGrid>
 
                 </IonList>
-
-                <IonList>
-                    <IonItemDivider>
-                        <IonLabel>
-                            All Contacts
-                    </IonLabel>
-                    </IonItemDivider>
-                    <IonItem>
-                        <IonGrid>
-                            <IonRow>
-                                <IonCol size="2">
-                                    <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
-                                </IonCol>
-                                <IonCol size="9">
-                                    <IonLabel className="txUsername">John Smith</IonLabel>
-                                    <IonLabel className="txReason">Job Completed</IonLabel>
-                                </IonCol>
-                                <IonCol size="1">
-                                    <IonIcon className="contactOptions" icon={ellipsisVerticalOutline}></IonIcon>
-                                </IonCol>
-                            </IonRow>
-                        </IonGrid>
-                    </IonItem>
-                </IonList>
+                
                 <IonAlert
                     isOpen={this.state.showAlert}
                     header={this.state.alertTitle}
@@ -159,11 +155,12 @@ class Send extends Component {
     }
 }
 
-function mapStateToProps({ auth, user, txReasons }) {
+function mapStateToProps({ auth, user, txReasons, contacts }) {
     return {
         token: auth.token,
         txReasons,
         user,
+        contacts,
     }
 }
 

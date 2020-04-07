@@ -105,3 +105,14 @@ export function deleteContact(params) {
     })
 }
 
+export function sendInternalTx(params) {
+    return fetch(API + '/sendInternalTx', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+

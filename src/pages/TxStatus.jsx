@@ -48,7 +48,7 @@ class TxStatus extends Component {
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <ion-button color="primary" expand="block" type="submit" >
+                                <ion-button color="primary" expand="block" onClick={e => {e.preventDefault(); this.props.history.replace('/main'); }} >
                                     <IonIcon icon={returnDownBackOutline} style={{ marginRight: '5px' }}></IonIcon> Return
                                 </ion-button>
                             </IonCol>

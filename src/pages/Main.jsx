@@ -102,6 +102,8 @@ class Main extends Component {
 
         const { pageTitle } = this.state
 
+        
+
         return (
             <IonPage>
                 <IonHeader>
