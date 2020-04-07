@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import {
     IonList, IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar, IonIcon, IonButton,
@@ -24,6 +25,11 @@ class Wallet extends Component {
 
     handleSelectedTxType = (txType) => {
         this.setState({ selectedTxType: txType })
+    }
+
+    handleTxClick = (txId) => {
+        console.log(txId)
+        this.props.history.push('/tx/' + txId)
     }
 
     render() {
@@ -102,7 +108,7 @@ class Wallet extends Component {
                                         let username = operation === 'sent' ? user.firstName + ' ' + user.lastName : tx.user.firstName + ' ' + tx.user.lastName
 
                                         return (
-                                            <IonItem color="white" detail button key={tx.id} style={arr.length - 1 == index ? {marginBottom:'30px'} : {}}>
+                                            <IonItem onClick={e => {e.preventDefault(); this.handleTxClick(tx.id); }} color="white" detail button key={tx.id} style={arr.length - 1 == index ? {marginBottom:'30px'} : {}}>
                                                 <IonGrid>
                                                     <IonRow>
                                                         <IonCol size="3" style={{ textAlign: 'center' }}>
@@ -153,4 +159,4 @@ function mapStateToProps({ auth, user, transactions }) {
     }
 }
 
-export default connect(mapStateToProps)(withIonLifeCycle(Wallet))
+export default withRouter(connect(mapStateToProps)(withIonLifeCycle(Wallet)))

@@ -116,3 +116,32 @@ export function sendInternalTx(params) {
     })
 }
 
+export function getInbox(params) {
+    return fetch(API + '/paymentRequests/PENDING_APPROVAL', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function approvePaymentRequest(params) {
+    return fetch(API + '/approvePaymentRequest/' + params.requestId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+export function rejectPaymentRequest(params) {
+    return fetch(API + '/rejectPaymentRequest/' + params.requestId, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+

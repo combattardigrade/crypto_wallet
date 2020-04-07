@@ -20,9 +20,11 @@ import { saveTxs } from '../actions/transactions'
 import { saveRankings } from '../actions/rankings'
 import { saveTxReasons } from '../actions/txReasons'
 import { saveContacts } from '../actions/contacts'
+import { saveInbox } from '../actions/inbox'
 
 // API
-import { getUserData, getTxs, getRankings, getTxReasons, getContacts } from '../utils/api'
+import { getUserData, getTxs, getRankings, getTxReasons, getContacts, getInbox } from '../utils/api'
+
 
 
 
@@ -90,6 +92,15 @@ class Main extends Component {
             .then((res) => {
                 console.log(res)
                 dispatch(saveContacts(res.payload))
+            })
+
+        getInbox({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if(res.status === 'OK') {
+                    console.log(res.payload)
+                    dispatch(saveInbox(res.payload))
+                }
             })
 
     }

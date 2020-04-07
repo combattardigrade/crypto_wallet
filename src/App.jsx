@@ -40,7 +40,8 @@ import TxStatus from './pages/TxStatus'
 import ConfirmTx from './pages/ConfirmTx'
 import Contacts from './pages/Contacts'
 import NewContact from './pages/NewContact'
-import ContactDetails from './pages/ContactDetails.jsx';
+import ContactDetails from './pages/ContactDetails'
+import PaymentRequest from './pages/PaymentRequest'
 
 class App extends Component {
 
@@ -73,6 +74,7 @@ class App extends Component {
               <PrivateRoute path='/contacts' component={Contacts} auth={auth} />
               <PrivateRoute path='/newContact' component={NewContact} auth={auth} />
               <PrivateRoute path='/contact/:contactId' component={ContactDetails} auth={auth} />
+              <PrivateRoute path='/paymentRequest/:requestId' component={PaymentRequest} auth={auth} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

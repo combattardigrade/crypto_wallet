@@ -115,7 +115,7 @@ class NewContact extends Component {
                     <IonItemDivider>
                         <IonLabel>Search Results</IonLabel>
                     </IonItemDivider>
-
+                    <div style={{ height: '45vh', overflow: 'auto'}}>
                     <IonList style={{ padding: 0, margin: 0 }}>
                         {
                             searchResults && searchResults.length > 0
@@ -141,6 +141,7 @@ class NewContact extends Component {
 
                         }
                     </IonList>
+                    </div>
 
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
