@@ -11,7 +11,8 @@ import {
 
 class Rankings extends Component {
     state = {
-        category: 'all'
+        category: 'all',
+        period: 'week',
     }
 
     ionViewWillEnter() {
@@ -22,7 +23,13 @@ class Rankings extends Component {
         this.setState({ category: value })
     }
 
+    handlePeriodChange = (period) => this.setState({ period })
+
     render() {
+
+        const { rankings } = this.props
+        const { period } = this.state
+
         return (
             <Fragment>
                 <IonItem lines="none">
@@ -40,13 +47,13 @@ class Rankings extends Component {
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <IonButton color="light" expand="full">YEAR</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('year') }} color={period === 'year' ? 'primary' : 'light'} expand="full">YEAR</IonButton>
                             </IonCol>
                             <IonCol>
-                                <IonButton color="light" expand="full">MONTH</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('month') }} color={period === 'month' ? 'primary' : 'light'} expand="full">MONTH</IonButton>
                             </IonCol>
                             <IonCol>
-                                <IonButton color="primary" expand="full">WEEK</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('week') }} color={period === 'week' ? 'primary' : 'light'} expand="full">WEEK</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -57,25 +64,36 @@ class Rankings extends Component {
                         Top
                     </IonLabel>
                 </IonItemDivider>
-                
-                <IonItem>
-                    <IonGrid>
-                        <IonRow>
-                            <IonCol size="1" style={{ textAlign: 'center' }}>
-                                <IonLabel className="rankingsIndex">1</IonLabel>
-                            </IonCol>
-                            <IonCol size="2">
-                                <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
-                            </IonCol>
-                            <IonCol size="7">
-                                <IonLabel className="rankingsName">John Smith</IonLabel>
-                            </IonCol>
-                            <IonCol size="2" style={{ textAlign: 'center' }}>
-                                <IonLabel className="rankingsAmount">88</IonLabel>
-                            </IonCol>
-                        </IonRow>
-                    </IonGrid>
-                </IonItem>
+
+                {
+                    rankings && Object.values(rankings[period]).length > 0
+                        ?
+                        Object.values(rankings[period]).map((r, i) => (
+                            <IonItem key={i}>
+                                <IonGrid>
+                                    <IonRow>
+                                        <IonCol size="1" style={{ textAlign: 'center' }}>
+                                            <IonLabel className="rankingsIndex">{i+1}</IonLabel>
+                                        </IonCol>
+                                        <IonCol size="2">
+                                            <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
+                                        </IonCol>
+                                        <IonCol size="7">
+                                            <IonLabel className="rankingsName">{r.user.firstName + ' ' + r.user.lastName}</IonLabel>
+                                        </IonCol>
+                                        <IonCol size="2" style={{ textAlign: 'center' }}>
+                                            <IonLabel className="rankingsAmount">{parseInt(r.total_amount)}</IonLabel>
+                                        </IonCol>
+                                    </IonRow>
+                                </IonGrid>
+                            </IonItem>
+                        ))
+                        :
+                        null
+                }
+
+
+
 
 
             </Fragment>
@@ -83,10 +101,10 @@ class Rankings extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, rankings }) {
     return {
         token: auth.token,
-
+        rankings
     }
 }
 

@@ -38,6 +38,9 @@ import Settings from './pages/Settings'
 import Receive from './pages/Receive'
 import TxStatus from './pages/TxStatus'
 import ConfirmTx from './pages/ConfirmTx'
+import Contacts from './pages/Contacts'
+import NewContact from './pages/NewContact'
+import ContactDetails from './pages/ContactDetails.jsx';
 
 class App extends Component {
 
@@ -56,8 +59,6 @@ class App extends Component {
           <IonSplitPane contentId="main">
             <Menu selectedPage={selectedPage} />
             <IonRouterOutlet id="main">
-              
-
               <Route path="/" render={() => <Redirect to="/login" />} exact={true} />
               <Route path="/intro" component={Intro} />
               <Route path="/login" component={Login} />
@@ -69,6 +70,9 @@ class App extends Component {
               <PrivateRoute path="/receive" component={Receive} auth={auth} />
               <PrivateRoute path='/txStatus/:status' component={TxStatus} auth={auth} />
               <PrivateRoute path='/confirmTx' component={ConfirmTx} auth={auth} />
+              <PrivateRoute path='/contacts' component={Contacts} auth={auth} />
+              <PrivateRoute path='/newContact' component={NewContact} auth={auth} />
+              <PrivateRoute path='/contact/:contactId' component={ContactDetails} auth={auth} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

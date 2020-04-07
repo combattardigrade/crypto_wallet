@@ -43,7 +43,7 @@ export function getTxs(params) {
 }
 
 export function getRankings(params) {
-    return fetch(API + '/rankings', {
+    return fetch(API + '/rankings/' + params.period, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -52,4 +52,56 @@ export function getRankings(params) {
     })
 }
 
+export function getTxReasons(params) {
+    return fetch(API + '/txReasons', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function getContacts(params) {
+    return fetch(API + '/contacts', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function searchContact(params) {
+    return fetch(API + '/searchContact', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function addContact(params) {
+    return fetch(API + '/contact', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function deleteContact(params) {
+    return fetch(API + '/contact/' + params.contactId, {
+        method: 'DELETE',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
 

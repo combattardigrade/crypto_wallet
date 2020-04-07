@@ -17,9 +17,13 @@ import Inbox from './Inbox'
 // Actions
 import { saveUserData } from '../actions/user'
 import { saveTxs } from '../actions/transactions'
+import { saveRankings } from '../actions/rankings'
+import { saveTxReasons } from '../actions/txReasons'
+import { saveContacts } from '../actions/contacts'
 
 // API
-import { getUserData, getTxs } from '../utils/api'
+import { getUserData, getTxs, getRankings, getTxReasons, getContacts } from '../utils/api'
+
 
 
 class Main extends Component {
@@ -32,7 +36,7 @@ class Main extends Component {
         getUserData({ token })
             .then(data => data.json())
             .then((res) => {
-                if(res.status == 'OK') {
+                if (res.status == 'OK') {
                     console.log(res)
                     dispatch(saveUserData(res.payload))
                 }
@@ -41,11 +45,53 @@ class Main extends Component {
         getTxs({ token })
             .then(data => data.json())
             .then((res) => {
-                if(res.status == 'OK') {
+                if (res.status == 'OK') {
                     console.log(res)
                     dispatch(saveTxs(res.payload))
                 }
             })
+
+        getRankings({ period: 'week', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'week', rankings: res.payload }))
+                }
+            })
+
+        getRankings({ period: 'month', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'month', rankings: res.payload }))
+                }
+            })
+
+        getRankings({ period: 'year', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'year', rankings: res.payload }))
+                }
+            })
+
+        getTxReasons({ token })
+            .then(data => data.json())
+            .then((res) => {
+                console.log(res)
+                dispatch(saveTxReasons(res.payload))
+            })
+
+        getContacts({ token })
+            .then(data => data.json())
+            .then((res) => {
+                console.log(res)
+                dispatch(saveContacts(res.payload))
+            })
+
     }
 
     handleTabBtnClick = (page) => {
@@ -84,11 +130,11 @@ class Main extends Component {
                             <ion-nav><Inbox /></ion-nav>
                         </ion-tab>
                         <ion-tab-bar slot="bottom">
-                            <ion-tab-button  tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Wallet') }}>
+                            <ion-tab-button tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Wallet') }}>
                                 <IonIcon icon={walletOutline}></IonIcon>
                                 <ion-label>Wallet</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button  tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Rankings') }}>
+                            <ion-tab-button tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Rankings') }}>
                                 <IonIcon icon={trophyOutline}></IonIcon>
                                 <ion-label>Rankings</ion-label>
                             </ion-tab-button>
@@ -96,7 +142,7 @@ class Main extends Component {
                                 <IonIcon icon={sendOutline}></IonIcon>
                                 <ion-label>Send</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button  tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Inbox') }}>
+                            <ion-tab-button tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Inbox') }}>
                                 <IonIcon icon={fileTrayOutline}></IonIcon>
                                 <ion-label>Inbox</ion-label>
                             </ion-tab-button>
