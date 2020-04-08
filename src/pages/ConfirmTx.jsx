@@ -110,7 +110,7 @@ class ConfirmTx extends Component {
                                 </IonRow>
                                 <IonRow>
                                     <IonCol style={{ textAlign: 'center' }}>
-                                        <IonLabel style={{ fontSize: '1.8em', color: '#0033CC', fontWeight: 'bold' }}>4{transfer.amount}</IonLabel>
+                                        <IonLabel style={{ fontSize: '1.8em', color: '#0033CC', fontWeight: 'bold' }}>{transfer.amount}</IonLabel>
                                         <IonLabel style={{ color: '#0033CC', fontWeight: 'bold' }}>JWS</IonLabel>
                                     </IonCol>
                                 </IonRow>
