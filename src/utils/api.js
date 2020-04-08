@@ -1,6 +1,4 @@
-export const API = 'http://genesisblock.ddns.net:3000/api'
-const MAPBOX_DIRECTIONS_API = 'https://api.mapbox.com/directions/v5/mapbox/walking/'
-const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiY29tYmF0dGFyZGlncmFkZSIsImEiOiJjanJsOXJqeDYwNmFkM3ltdXdmdG5kOTFqIn0.C14U4oY3yTlrtX_2mDFlCQ'
+export const API = 'http://155.138.230.105:5000/api'
 
 export function login(params) {
     return fetch(API + '/login', {
