@@ -16,7 +16,7 @@ import { personCircleOutline } from 'ionicons/icons'
 import './styles-dark.css'
 
 // Images
-const logo = require('../images/logo.png')
+const logo = require('../components/logo.png')
 
 
 

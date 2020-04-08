@@ -89,10 +89,10 @@ class Menu extends Component {
               <IonIcon icon={settingsOutline}></IonIcon>
               <IonLabel style={{ marginLeft: '10px' }}>Settings</IonLabel>
             </IonItem>
-            <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('settings') }}>
+            {/* <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('settings') }}>
               <IonIcon icon={businessOutline}></IonIcon>
               <IonLabel style={{ marginLeft: '10px' }}>About</IonLabel>
-            </IonItem>
+            </IonItem> */}
           </IonList>
 
           <IonItem lines="none" button style={{ position: 'absolute', bottom: '20px', width: '100%' }} onClick={this.handleUserLogout} >

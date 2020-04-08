@@ -37,7 +37,7 @@ class Wallet extends Component {
         const { selectedTxType } = this.state
         const { user, transactions, handleChangeTab } = this.props
 
-        const balance = 'balances' in user ? parseFloat(user.balances[0].amount) : 0.0
+        const balance = user ? 'balances' in user ? parseFloat(user.balances[0].amount) : 0.0 : 0.0
 
         return (
             <Fragment>

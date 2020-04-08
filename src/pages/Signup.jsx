@@ -18,7 +18,7 @@ import { saveToken } from '../actions/auth'
 import './styles-dark.css'
 
 // Images
-const logo = require('../images/logo.png')
+const logo = require('../components/logo.png')
 
 // Libraries
 const emailValidator = require('email-validator')

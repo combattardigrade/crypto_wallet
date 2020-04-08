@@ -115,6 +115,78 @@ class Main extends Component {
         this.tabsRef.current.select(tab)
     }
 
+    handleRefreshBtn = (e) => {
+        e.preventDefault()
+        const { token, dispatch } = this.props
+        getUserData({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveUserData(res.payload))
+                }
+            })
+
+        getTxs({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveTxs(res.payload))
+                }
+            })
+
+        getRankings({ period: 'week', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'week', rankings: res.payload }))
+                }
+            })
+
+        getRankings({ period: 'month', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'month', rankings: res.payload }))
+                }
+            })
+
+        getRankings({ period: 'year', token })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status == 'OK') {
+                    console.log(res)
+                    dispatch(saveRankings({ period: 'year', rankings: res.payload }))
+                }
+            })
+
+        getTxReasons({ token })
+            .then(data => data.json())
+            .then((res) => {
+                console.log(res)
+                dispatch(saveTxReasons(res.payload))
+            })
+
+        getContacts({ token })
+            .then(data => data.json())
+            .then((res) => {
+                console.log(res)
+                dispatch(saveContacts(res.payload))
+            })
+
+        getInbox({ token })
+            .then(data => data.json())
+            .then((res) => {
+                if(res.status === 'OK') {
+                    console.log(res.payload)
+                    dispatch(saveInbox(res.payload))
+                }
+            })
+    }
+
     tabsRef = React.createRef()
 
     render() {
@@ -130,7 +202,7 @@ class Main extends Component {
                         </IonButtons>
                         <IonTitle>{pageTitle}</IonTitle>
                         <IonButtons slot="end">
-                            <IonButton ><IonIcon icon={refreshOutline}></IonIcon></IonButton>
+                            <IonButton onClick={this.handleRefreshBtn}><IonIcon icon={refreshOutline}></IonIcon></IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>

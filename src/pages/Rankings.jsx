@@ -30,6 +30,10 @@ class Rankings extends Component {
         const { rankings } = this.props
         const { period } = this.state
 
+        if(!rankings || !period) {
+            return <IonItem><IonLabel>Loading...</IonLabel></IonItem>
+        }
+
         return (
             <Fragment>
                 <IonItem lines="none">
