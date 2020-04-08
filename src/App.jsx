@@ -75,6 +75,7 @@ class App extends Component {
               <PrivateRoute path='/newContact' component={NewContact} auth={auth} />
               <PrivateRoute path='/contact/:contactId' component={ContactDetails} auth={auth} />
               <PrivateRoute path='/paymentRequest/:requestId' component={PaymentRequest} auth={auth} />
+              <PrivateRoute path='/wallet' component="tab-wallet" auth={auth} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

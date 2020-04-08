@@ -145,3 +145,14 @@ export function rejectPaymentRequest(params) {
     })
 }
 
+export function withdrawTokens(params) {
+    return fetch(API + '/withdrawTokens', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+

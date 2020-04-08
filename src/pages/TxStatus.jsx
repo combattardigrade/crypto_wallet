@@ -38,8 +38,8 @@ class TxStatus extends Component {
                                     <IonCol size="12" style={{ textAlign: 'center' }}>
                                         <IonLabel style={{ color: 'white', fontWeight:'bold' }}>{status == 'OK' ? 'Transaction Completed' : 'Transaction'}</IonLabel>
                                         <IonLabel style={{ color: 'white', fontWeight:'bold' }}>{status == 'OK' ? 'Successfully' : 'Rejected'}</IonLabel>
-                                        <IonLabel style={{color:'#d2d2d2', marginTop: '10px', fontSize:'12px',}}> Your transfer of x coins to</IonLabel>
-                                        <IonLabel style={{color:'#d2d2d2', fontSize:'12px'}}>Name  {status == 'OK' ? 'completed successfully' : 'has been rejected'}</IonLabel>
+                                        <IonLabel style={{color:'#d2d2d2', marginTop: '10px', fontSize:'12px',}}> Your transfer of JWS</IonLabel>
+                                        <IonLabel style={{color:'#d2d2d2', fontSize:'12px'}}>  {status == 'OK' ? 'completed successfully' : 'has been rejected'}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>

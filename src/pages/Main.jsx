@@ -34,6 +34,7 @@ class Main extends Component {
     }
 
     ionViewWillEnter() {
+        
         const { token, dispatch } = this.props
         getUserData({ token })
             .then(data => data.json())
@@ -109,11 +110,16 @@ class Main extends Component {
         this.setState({ pageTitle: page })
     }
 
+    handleChangeTab = (tab) => {
+        // this.tabs.current.getSelected().then(tab => console.log(tab))
+        this.tabsRef.current.select(tab)
+    }
+
+    tabsRef = React.createRef()
+
     render() {
 
         const { pageTitle } = this.state
-
-        
 
         return (
             <IonPage>
@@ -129,9 +135,9 @@ class Main extends Component {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent scrollY={false} >
-                    <ion-tabs selectedIndex="2" >
+                    <ion-tabs ref={this.tabsRef} >
                         <ion-tab tab="tab-wallet">
-                            <ion-nav><Wallet /></ion-nav>
+                            <ion-nav><Wallet handleChangeTab={this.handleChangeTab} /></ion-nav>
                         </ion-tab>
                         <ion-tab tab="tab-rankings">
                             <ion-nav><Rankings /></ion-nav>

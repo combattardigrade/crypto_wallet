@@ -35,7 +35,7 @@ class Wallet extends Component {
     render() {
 
         const { selectedTxType } = this.state
-        const { user, transactions } = this.props
+        const { user, transactions, handleChangeTab } = this.props
 
         const balance = 'balances' in user ? parseFloat(user.balances[0].amount) : 0.0
 
@@ -57,15 +57,15 @@ class Wallet extends Component {
                             </IonRow>
                             <IonRow style={{ marginTop: '20px' }}>
                                 <IonCol style={{ textAlign: 'center' }} size="3" offset="1.5">
-                                    <a className="walletBtn" ><MdCallMade style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
+                                    <a className="walletBtn" onClick={e => {e.preventDefault(); handleChangeTab('tab-send'); }}><MdCallMade style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
                                     <IonLabel className="walletBtnSubtitle">Send</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
-                                    <a className="walletBtn" ><MdCallReceived style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
+                                    <a className="walletBtn" onClick={e => { e.preventDefault(); this.props.history.push('/receive')}}><MdCallReceived style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
                                     <IonLabel className="walletBtnSubtitle">Receive</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
-                                    <a className="walletBtn" ><IonIcon icon={cloudUploadOutline}></IonIcon></a>
+                                    <a onClick={e => {e.preventDefault(); this.props.history.push('/withdraw')}} className="walletBtn" ><IonIcon icon={cloudUploadOutline}></IonIcon></a>
                                     <IonLabel className="walletBtnSubtitle">Withdraw</IonLabel>
                                 </IonCol>
                             </IonRow>
@@ -105,7 +105,7 @@ class Wallet extends Component {
                                     .map((tx, index, arr) => {
                                         
                                         let operation = tx.userId === user.id ? 'sent' : 'received'
-                                        let username = operation === 'sent' ? user.firstName + ' ' + user.lastName : tx.user.firstName + ' ' + tx.user.lastName
+                                        let name = tx.user.firstName + ' ' + tx.user.lastName
 
                                         return (
                                             <IonItem onClick={e => {e.preventDefault(); this.handleTxClick(tx.id); }} color="white" detail button key={tx.id} style={arr.length - 1 == index ? {marginBottom:'30px'} : {}}>
@@ -115,7 +115,7 @@ class Wallet extends Component {
                                                             <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
                                                         </IonCol>
                                                         <IonCol size="5">
-                                                            <IonLabel className="txUsername">{username}</IonLabel>
+                                                            <IonLabel className="txUsername">{name}</IonLabel>
                                                             <IonLabel className="txReason">{tx.reason}</IonLabel>
                                                             <IonLabel className="txDate">{moment(tx.createdAt).format('DD/MM/YYYY')}</IonLabel>
                                                         </IonCol>

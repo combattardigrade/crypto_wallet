@@ -15,7 +15,11 @@ class Settings extends Component {
     }
 
     ionViewWillEnter() {
-        console.log('test')
+        
+    }
+
+    handleBackBtn = () => {
+        this.props.history.goBack()
     }
 
     render() {
@@ -24,13 +28,11 @@ class Settings extends Component {
                 <IonHeader>
                     <IonToolbar color="primary" className="jiwardsToolbar">
                         <IonButtons slot="start">
-                            <IonButton ><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
+                            <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
                         <IonTitle>Settings</IonTitle>
-                        <IonButtons slot="end">
-                            <IonButton ><IonIcon icon={ellipsisVerticalOutline}></IonIcon></IonButton>
-                        </IonButtons>
+                        
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>

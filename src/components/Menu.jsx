@@ -20,7 +20,7 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
   peopleOutline, businessOutline,
    personCircleOutline,
-  settingsOutline,
+  settingsOutline, cloudDownloadOutline, cloudUploadOutline
 } from 'ionicons/icons';
 import './Menu.css';
 // import '../pages/styles.css'
@@ -76,6 +76,14 @@ class Menu extends Component {
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('contacts') }}>
               <IonIcon icon={peopleOutline}></IonIcon>
               <IonLabel style={{ marginLeft: '10px' }}>Contacts</IonLabel>
+            </IonItem>
+            <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('receive') }}>
+              <IonIcon icon={cloudDownloadOutline}></IonIcon>
+              <IonLabel style={{ marginLeft: '10px' }}>Deposit</IonLabel>
+            </IonItem>
+            <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('withdraw') }}>
+              <IonIcon icon={cloudUploadOutline}></IonIcon>
+              <IonLabel style={{ marginLeft: '10px' }}>Withdraw</IonLabel>
             </IonItem>
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('settings') }}>
               <IonIcon icon={settingsOutline}></IonIcon>

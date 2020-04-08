@@ -8,7 +8,11 @@ import {
     chevronBackOutline, copyOutline, ellipsisVerticalOutline
 } from 'ionicons/icons'
 
-var QRCode = require('qrcode.react');
+// Plugins
+import { Plugins } from '@capacitor/core'
+const { Clipboard } = Plugins
+
+const QRCode = require('qrcode.react');
 
 
 class Receive extends Component {
@@ -17,30 +21,41 @@ class Receive extends Component {
     }
 
     ionViewWillEnter() {
-        console.log('test')
+
+    }
+
+    handleBackBtn = () => {
+        this.props.history.goBack()
+    }
+
+    handleCopyToClipboardBtn = async (e) => {
+        e.preventDefault()
+        const { user } = this.props
+        Clipboard.write({ string: user.userAddress.address})
+       
     }
 
     render() {
+
+        const { user } = this.props
+
         return (
             <IonPage>
                 <IonHeader>
                     <IonToolbar color="primary" className="jiwardsToolbar">
                         <IonButtons slot="start">
-                            <IonButton ><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
+                            <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Receive Payment</IonTitle>
-                        <IonButtons slot="end">
-                            <IonButton ><IonIcon icon={ellipsisVerticalOutline}></IonIcon></IonButton>
-                        </IonButtons>
+                        <IonTitle>Deposit JWS</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <IonContent>
+                <IonContent scrollY={false}>
                     <IonItem style={{ marginTop: '60px' }} lines="none">
                         <IonGrid>
                             <IonRow>
                                 <IonCol style={{ textAlign: 'center' }}>
-                                    <QRCode style={{ width: '200px', height: '200px' }} value="http://facebook.github.io/react/" />
+                                    <QRCode style={{ width: '200px', height: '200px' }} value={user.userAddress.address} />
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
@@ -49,27 +64,24 @@ class Receive extends Component {
                         <IonGrid>
                             <IonRow>
                                 <IonCol size="9">
-                                    <IonInput type="number" style={{color:'#0033CC', fontSize:'1.5em'}}></IonInput>
+                                    <IonLabel style={{ fontSize: '12px', color: 'grey' }}>Your Ethereum Address: </IonLabel>
                                 </IonCol>
-                                <IonCol size="3" style={{textAlign:'center',paddingTop:'20px',color:'#0033CC'}}>
-                                    <IonLabel>COINS</IonLabel>
+                            </IonRow>
+                            <IonRow>
+                                <IonCol size="9">
+                                    <IonInput readonly value={user.userAddress.address} style={{ color: '#0033CC', fontSize:'0.8em'}}></IonInput>
+                                </IonCol>
+                                <IonCol size="3" style={{ textAlign: 'center', color: '#0033CC' }}>
+                                    <IonButton onClick={this.handleCopyToClipboardBtn}>
+                                        <IonIcon style={{ color: 'white' }} icon={copyOutline}></IonIcon>
+                                    </IonButton>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
                     </IonItem>
                     <IonItem lines="none">
                         <IonGrid>
-                            <IonRow>
-                                <IonCol size="9">
-                                    <IonLabel style={{fontSize:'10px', color: 'grey'}}>0x5eD8Cee6b63b1c6AFce3AD7c92f4fD7E1B8fAd9F</IonLabel>
-                                    <IonLabel style={{fontSize:'12px', color: 'grey'}}>Your Ethereum Address</IonLabel>
-                                </IonCol>
-                                <IonCol size="3" style={{textAlign:'center',marginTop:'-5px'}}>
-                                    <IonButton >
-                                        <IonIcon style={{color:'white'}}  icon={copyOutline}></IonIcon>
-                                    </IonButton>
-                                </IonCol>
-                            </IonRow>
+
                         </IonGrid>
                     </IonItem>
                 </IonContent>
@@ -79,9 +91,10 @@ class Receive extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, user }) {
     return {
         token: auth.token,
+        user,
 
     }
 }
