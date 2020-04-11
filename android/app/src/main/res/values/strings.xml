@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">jiwards</string>
-    <string name="title_activity_main">jiwards</string>
+    <string name="app_name">Jiwards</string>
+    <string name="title_activity_main">Jiwards</string>
     <string name="package_name">com.jiwards.app</string>
     <string name="custom_url_scheme">com.jiwards.app</string>
 </resources>

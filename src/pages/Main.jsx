@@ -113,6 +113,8 @@ class Main extends Component {
     handleChangeTab = (tab) => {
         // this.tabs.current.getSelected().then(tab => console.log(tab))
         this.tabsRef.current.select(tab)
+        const page = tab === 'tab-send' ? 'Enviar' : 'Wallet'
+        this.setState({ pageTitle: page })
     }
 
     handleRefreshBtn = (e) => {
@@ -215,7 +217,7 @@ class Main extends Component {
                             <ion-nav><Rankings /></ion-nav>
                         </ion-tab>
                         <ion-tab tab="tab-send">
-                            <ion-nav><Send /></ion-nav>
+                            <ion-nav><Send handleChangeTab={this.handleChangeTab}/></ion-nav>
                         </ion-tab>
                         <ion-tab tab="tab-inbox">
                             <ion-nav><Inbox /></ion-nav>

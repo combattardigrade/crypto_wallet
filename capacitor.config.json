@@ -1,6 +1,6 @@
 {
   "appId": "com.jiwards.app",
-  "appName": "jiwards",
+  "appName": "Jiwards",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "build",

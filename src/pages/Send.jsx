@@ -81,6 +81,14 @@ class Send extends Component {
         this.setState({ showAlert: true, alertMsg: msg, alertTitle: title })
     }
 
+    ionViewWillEnter = () => {
+        const { txCompleted } = this.state
+        const { handleChangeTab } = this.props
+        if(txCompleted) {
+            handleChangeTab('tab-wallet');
+        }
+    }
+
     render() {
 
         const { txReasons, contacts } = this.props

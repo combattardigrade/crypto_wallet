@@ -2,17 +2,17 @@ import React, { Component } from 'react'
 
 import {
     IonPage, IonIcon, IonGrid, IonRow, IonCol, withIonLifeCycle,
-    IonItem, IonLabel, IonContent, 
+    IonItem, IonLabel, IonContent,
 } from '@ionic/react';
 
 import {
-    returnDownBackOutline, 
+    returnDownBackOutline,
 } from 'ionicons/icons'
 
 const successIcon = require('../components/success_icon.png')
 const errorIcon = require('../components/error_icon.png')
 
-class TxStatus extends Component {    
+class TxStatus extends Component {
 
     render() {
 
@@ -36,10 +36,10 @@ class TxStatus extends Component {
                             <IonGrid>
                                 <IonRow>
                                     <IonCol size="12" style={{ textAlign: 'center' }}>
-                                        <IonLabel style={{ color: 'white', fontWeight:'bold' }}>{status == 'OK' ? 'Transaction Completed' : 'Transaction'}</IonLabel>
-                                        <IonLabel style={{ color: 'white', fontWeight:'bold' }}>{status == 'OK' ? 'Successfully' : 'Rejected'}</IonLabel>
-                                        <IonLabel style={{color:'#d2d2d2', marginTop: '10px', fontSize:'12px',}}> Your transfer of JWS</IonLabel>
-                                        <IonLabel style={{color:'#d2d2d2', fontSize:'12px'}}>  {status == 'OK' ? 'completed successfully' : 'has been rejected'}</IonLabel>
+                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? 'Transaction Completed' : 'Transaction'}</IonLabel>
+                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? 'Successfully' : 'Rejected'}</IonLabel>
+                                        <IonLabel style={{ color: '#d2d2d2', marginTop: '10px', fontSize: '12px', }}> Your transfer of JWS</IonLabel>
+                                        <IonLabel style={{ color: '#d2d2d2', fontSize: '12px' }}>  {status == 'OK' ? 'completed successfully' : 'has been rejected'}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
@@ -48,7 +48,7 @@ class TxStatus extends Component {
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <ion-button color="primary" expand="block" onClick={e => {e.preventDefault(); this.props.history.replace('/main'); }} >
+                                <ion-button color="primary" expand="block" onClick={e => { e.preventDefault(); this.props.history.replace({ pathname: '/main', state: { txCompleted: true } }); }} >
                                     <IonIcon icon={returnDownBackOutline} style={{ marginRight: '5px' }}></IonIcon> Return
                                 </ion-button>
                             </IonCol>
