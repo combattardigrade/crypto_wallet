@@ -105,7 +105,7 @@ class Wallet extends Component {
                                     .map((tx, index, arr) => {
                                         
                                         let operation = tx.userId === user.id ? 'sent' : 'received'
-                                        let name = tx.user.firstName + ' ' + tx.user.lastName
+                                        let name = operation === 'sent' ? tx.to.firstName + ' ' + tx.to.lastName : tx.from.firstName + ' ' + tx.from.lastName
 
                                         return (
                                             <IonItem onClick={e => {e.preventDefault(); this.handleTxClick(tx.id); }} color="white" detail button key={tx.id} style={arr.length - 1 == index ? {marginBottom:'30px'} : {}}>

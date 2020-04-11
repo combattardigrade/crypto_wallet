@@ -22,7 +22,7 @@ class Send extends Component {
         contact: '',
         amount: '',
         reason: '',
-        descripion: '',
+        description: '',
         selectedContact: ''
     }
 
@@ -65,13 +65,13 @@ class Send extends Component {
             return
         }
 
-        if(isNaN(amount) || amount < 0) {
+        if (isNaN(amount) || amount < 0) {
             this.showAlert('Enter a valid amount', 'Error')
             return
         }
 
         let contactDetails = Object.values(contacts).filter(c => c.contactId == contact)
-        
+
         const transfer = { contact: contactDetails[0], amount, reason, description }
         dispatch(saveTransfer(transfer))
         history.push('/confirmTx')
@@ -82,10 +82,21 @@ class Send extends Component {
     }
 
     ionViewWillEnter = () => {
-        const { txCompleted } = this.state
+        const { location } = this.props
         const { handleChangeTab } = this.props
-        if(txCompleted) {
-            handleChangeTab('tab-wallet');
+
+        if ('state' in location && typeof location.state !== 'undefined') {
+            if ('txCompleted' in location.state && location.state.txCompleted) {
+                console.log('tx completed')
+                this.setState({
+                    contact: '',
+                    amount: '',
+                    reason: '',
+                    description: '',
+                    selectedContact: ''
+                })
+                handleChangeTab('tab-wallet');
+            }
         }
     }
 
@@ -102,12 +113,12 @@ class Send extends Component {
                         <IonSelect value={this.state.contact} name="contact" placeholder="Select a contact" onIonChange={this.handleContactChange}>
                             {
                                 contacts && Object.values(contacts).length > 0
-                                ?
-                                Object.values(contacts).map((contact, index) => (
-                                    <IonSelectOption  key={index} value={contact.contactId}>{contact.firstName + ' ' + contact.lastName}</IonSelectOption>
-                                ))
-                                :
-                                null
+                                    ?
+                                    Object.values(contacts).map((contact, index) => (
+                                        <IonSelectOption key={index} value={contact.contactId}>{contact.firstName + ' ' + contact.lastName}</IonSelectOption>
+                                    ))
+                                    :
+                                    null
                             }
                         </IonSelect>
                     </IonItem>
@@ -145,7 +156,7 @@ class Send extends Component {
                     </IonGrid>
 
                 </IonList>
-                
+
                 <IonAlert
                     isOpen={this.state.showAlert}
                     header={this.state.alertTitle}

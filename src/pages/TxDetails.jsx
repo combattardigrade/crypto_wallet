@@ -8,6 +8,7 @@ import {
     chevronBackOutline, personCircleOutline, ellipsisVerticalOutline
 } from 'ionicons/icons'
 
+const moment = require('moment')
 
 class TxDetails extends Component {
     state = {
@@ -23,6 +24,12 @@ class TxDetails extends Component {
     }
 
     render() {
+
+        const { transactions } = this.props
+        const { id } = this.props.match.params
+        
+        const tx = (Object.values(transactions).filter(tx => tx.id == id))[0]
+        
         return (
             <IonPage>
                 <IonHeader>
@@ -39,31 +46,28 @@ class TxDetails extends Component {
                     <IonList>
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">Transaction ID</IonLabel>
-                            <IonInput className="formInput" readonly value="123"></IonInput>
+                            <IonInput className="formInput" readonly value={tx.id}></IonInput>
                         </IonItem>
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">From</IonLabel>
-                            <IonInput className="formInput" readonly value="John Smith"></IonInput>
+                            <IonInput className="formInput" readonly value={tx.from.firstName + ' ' + tx.from.lastName}></IonInput>
                         </IonItem>
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">To</IonLabel>
-                            <IonInput className="formInput" readonly value="Emma Smith"></IonInput>
+                            <IonInput className="formInput" readonly value={tx.to.firstName + ' ' + tx.to.lastName}></IonInput>
                         </IonItem>
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">Reason</IonLabel>
-                            <IonInput className="formInput" readonly value="Task Completed"></IonInput>
+                            <IonInput className="formInput" readonly value={tx.reason}></IonInput>
                         </IonItem>
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">Amount</IonLabel>
-                            <IonInput className="formInput" readonly value="500"></IonInput>
+                            <IonInput className="formInput" readonly value={tx.amount}></IonInput>
                         </IonItem>
-                        <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Reason</IonLabel>
-                            <IonTextarea className="formInput" readonly value="Task Completed"></IonTextarea >
-                        </IonItem>
+                        
                         <IonItem>
                             <IonLabel className="formInputTitle" position="stacked">Date</IonLabel>
-                            <IonInput readonly value="26/03/2020"></IonInput>
+                            <IonInput readonly value={moment(tx.createdAt).format("DD/MM/YYYY HH:mm:ss")}></IonInput>
                         </IonItem>
                     </IonList>
 
@@ -75,10 +79,10 @@ class TxDetails extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, transactions }) {
     return {
         token: auth.token,
-
+        transactions,
     }
 }
 

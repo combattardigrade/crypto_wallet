@@ -132,12 +132,14 @@ ion-item.whiteBg {
 ion-tab-button {
     background-color: #0033cc;
     color: white;
-    
+    --color-selected: white;
 }
-.tab-selected{
+
+.tab-selected {
     background: white !important;
     color: #0033cc !important;
-  }
+    --color-selected: #0033cc !important;
+}
 
 .authTitle {
     color: white;

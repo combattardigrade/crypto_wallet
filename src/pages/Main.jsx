@@ -113,7 +113,7 @@ class Main extends Component {
     handleChangeTab = (tab) => {
         // this.tabs.current.getSelected().then(tab => console.log(tab))
         this.tabsRef.current.select(tab)
-        const page = tab === 'tab-send' ? 'Enviar' : 'Wallet'
+        const page = tab === 'tab-send' ? 'Send' : 'Wallet'
         this.setState({ pageTitle: page })
     }
 
