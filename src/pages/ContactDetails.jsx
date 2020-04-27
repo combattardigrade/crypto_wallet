@@ -18,7 +18,11 @@ import { saveContacts } from '../actions/contacts'
 import en from '../locales/en'
 import fr from '../locales/fr'
 import nl from '../locales/nl'
-const LOCALES = { en, fr, nl }
+import es from '../locales/es'
+import pt from '../locales/pt'
+import ja from '../locales/ja'
+import zh from '../locales/zh'
+const LOCALES = { en, fr, nl, es, pt, ja, zh }
 
 class ContactDetails extends Component {
     state = {

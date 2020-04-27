@@ -62,7 +62,7 @@ class App extends Component {
   componentDidMount = async () => {
     const { dispatch } = this.props
     let lan, deviceData
-    const languages = ['en', 'fr', 'nl']
+    const languages = ['en', 'fr', 'nl', 'es', 'pt', 'ja', 'zh']
 
     try {
       deviceData = await Device.getInfo()
