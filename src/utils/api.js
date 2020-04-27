@@ -1,5 +1,5 @@
-export const API = 'http://155.138.230.105:5000/api'
-// export const API = 'http://genesisblock.ddns.net:3000/api'
+// export const API = 'http://155.138.230.105:5000/api'
+export const API = 'http://genesisblock.ddns.net:3000/api'
 
 export function login(params) {
     return fetch(API + '/login', {
@@ -155,3 +155,13 @@ export function withdrawTokens(params) {
     })
 }
 
+export function saveRegistrationKey(params) {
+    return fetch(API + '/push/registrationId', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}

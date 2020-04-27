@@ -23,18 +23,25 @@ import { saveContacts } from '../actions/contacts'
 import { saveInbox } from '../actions/inbox'
 
 // API
-import { getUserData, getTxs, getRankings, getTxReasons, getContacts, getInbox } from '../utils/api'
+import {
+    getUserData, getTxs, getRankings, getTxReasons, getContacts, getInbox,
+    saveRegistrationKey,
+} from '../utils/api'
 
-
-
+// Plugins
+import { Plugins } from '@capacitor/core'
+const { PushNotifications } = Plugins
 
 class Main extends Component {
     state = {
-        pageTitle: 'Wallet'
+        pageTitle: 'Wallet',
+        showAlert: false,
+        alertTitle: '',
+        alertMsg: '',
     }
 
     ionViewWillEnter() {
-        
+
         const { token, dispatch } = this.props
         getUserData({ token })
             .then(data => data.json())
@@ -98,12 +105,45 @@ class Main extends Component {
         getInbox({ token })
             .then(data => data.json())
             .then((res) => {
-                if(res.status === 'OK') {
+                if (res.status === 'OK') {
                     console.log(res.payload)
                     dispatch(saveInbox(res.payload))
                 }
             })
 
+        // Push Notifications
+        PushNotifications.register();
+
+        PushNotifications.addListener('registration', (registrationId) => {
+            console.log('Registration ID: ' + registrationId.value)
+            // send token to server
+            saveRegistrationKey({ registrationId: registrationId.value, token })
+                .then(data => data.json())
+                .then((res) => {
+                    if (res.tatus === 'OK') {
+                        console.log(res.payload)
+                    }
+                })
+        })
+
+        PushNotifications.addListener('registrationError', (error) => {
+            console.log(error)            
+        })
+
+        PushNotifications.addListener('pushNotificationReceived', (notification) => {
+            console.log('Push notification received: ')
+            console.log(notification)
+        })
+
+        PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+            console.log('Push action performed: ')
+            console.log(notification)
+        })
+
+    }
+
+    showAlert = (msg, title) => {
+        this.setState({ showAlert: true, alertMsg: msg, alertTitle: title })
     }
 
     handleTabBtnClick = (page) => {
@@ -182,7 +222,7 @@ class Main extends Component {
         getInbox({ token })
             .then(data => data.json())
             .then((res) => {
-                if(res.status === 'OK') {
+                if (res.status === 'OK') {
                     console.log(res.payload)
                     dispatch(saveInbox(res.payload))
                 }
@@ -217,7 +257,7 @@ class Main extends Component {
                             <ion-nav><Rankings /></ion-nav>
                         </ion-tab>
                         <ion-tab tab="tab-send">
-                            <ion-nav><Send handleChangeTab={this.handleChangeTab}/></ion-nav>
+                            <ion-nav><Send handleChangeTab={this.handleChangeTab} /></ion-nav>
                         </ion-tab>
                         <ion-tab tab="tab-inbox">
                             <ion-nav><Inbox /></ion-nav>
@@ -242,7 +282,17 @@ class Main extends Component {
                         </ion-tab-bar>
                     </ion-tabs>
 
-
+                    <IonAlert
+                        isOpen={this.state.showAlert}
+                        header={this.state.alertTitle}
+                        message={this.state.alertMsg}
+                        buttons={[{
+                            text: 'OK',
+                            handler: () => {
+                                this.setState({ showAlert: false })
+                            }
+                        }]}
+                    />
 
                 </IonContent>
             </IonPage>

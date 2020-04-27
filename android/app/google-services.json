@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1082381010612",
+    "firebase_url": "https://jiwards.firebaseio.com",
+    "project_id": "jiwards",
+    "storage_bucket": "jiwards.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1082381010612:android:c23bc04c4c27cb8bf5f9e1",
+        "android_client_info": {
+          "package_name": "com.jiwards.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1082381010612-m5aifvg0p1oaim10nnp69udbdolod42p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmBT-KKPtPhN13AhqAibCVkrjaDoXCujg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1082381010612-m5aifvg0p1oaim10nnp69udbdolod42p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

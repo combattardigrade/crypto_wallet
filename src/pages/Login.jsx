@@ -29,7 +29,12 @@ class Login extends Component {
     }
 
     componentDidMount() {
+        const { token } = this.props
 
+        if(token) {
+            this.props.history.replace('/main')
+            return
+        }
     }
 
     goToPage = (page) => {
@@ -141,9 +146,9 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps() {
+function mapStateToProps({ auth }) {
     return {
-
+        token: auth && auth.token
     }
 }
 
