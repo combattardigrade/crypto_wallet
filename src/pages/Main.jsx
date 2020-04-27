@@ -28,9 +28,16 @@ import {
     saveRegistrationKey,
 } from '../utils/api'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+
 // Plugins
 import { Plugins } from '@capacitor/core'
 const { PushNotifications } = Plugins
+const LOCALES = { en, fr, nl }
+
 
 class Main extends Component {
     state = {
@@ -42,7 +49,9 @@ class Main extends Component {
 
     ionViewWillEnter() {
 
-        const { token, dispatch } = this.props
+        const { token, lan, dispatch } = this.props
+        this.setState({ pageTitle: LOCALES[lan]['wallet']['wallet_title'] })
+
         getUserData({ token })
             .then(data => data.json())
             .then((res) => {
@@ -242,6 +251,7 @@ class Main extends Component {
     render() {
 
         const { pageTitle } = this.state
+        const { lan } = this.props
 
         return (
             <IonPage>
@@ -271,21 +281,21 @@ class Main extends Component {
                             <ion-nav><Inbox /></ion-nav>
                         </ion-tab>
                         <ion-tab-bar slot="bottom">
-                            <ion-tab-button tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Wallet') }}>
+                            <ion-tab-button tab="tab-wallet" onClick={e => { e.preventDefault(); this.handleTabBtnClick(LOCALES[lan]['main']['tab_wallet_btn']) }}>
                                 <IonIcon icon={walletOutline}></IonIcon>
-                                <ion-label>Wallet</ion-label>
+                                <ion-label>{LOCALES[lan]['main']['tab_wallet_btn']}</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Rankings') }}>
+                            <ion-tab-button tab="tab-rankings" onClick={e => { e.preventDefault(); this.handleTabBtnClick(LOCALES[lan]['main']['tab_rankings_btn']) }}>
                                 <IonIcon icon={trophyOutline}></IonIcon>
-                                <ion-label>Rankings</ion-label>
+                                <ion-label>{LOCALES[lan]['main']['tab_rankings_btn']}</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button tab="tab-send" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Send') }}>
+                            <ion-tab-button tab="tab-send" onClick={e => { e.preventDefault(); this.handleTabBtnClick(LOCALES[lan]['main']['tab_send_btn']) }}>
                                 <IonIcon icon={sendOutline}></IonIcon>
-                                <ion-label>Send</ion-label>
+                                <ion-label>{LOCALES[lan]['main']['tab_send_btn']}</ion-label>
                             </ion-tab-button>
-                            <ion-tab-button tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick('Inbox') }}>
+                            <ion-tab-button tab="tab-inbox" onClick={e => { e.preventDefault(); this.handleTabBtnClick(LOCALES[lan]['main']['tab_inbox_btn']) }}>
                                 <IonIcon icon={fileTrayOutline}></IonIcon>
-                                <ion-label>Inbox</ion-label>
+                                <ion-label>{LOCALES[lan]['main']['tab_inbox_btn']}</ion-label>
                             </ion-tab-button>
                         </ion-tab-bar>
                     </ion-tabs>
@@ -308,10 +318,11 @@ class Main extends Component {
     }
 }
 
-function mapStateToProps({ auth, user }) {
+function mapStateToProps({ auth, user, device }) {
     return {
         token: auth.token,
         user,
+        lan: device && device.language
     }
 }
 

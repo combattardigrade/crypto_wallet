@@ -8,10 +8,15 @@ import {
     chevronBackOutline, personCircleOutline, ellipsisVerticalOutline
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+
 // Plugins
 import { Plugins } from '@capacitor/core'
 const { Device } = Plugins
-
+const LOCALES = { en, fr, nl }
 
 class Settings extends Component {
     state = {
@@ -21,7 +26,7 @@ class Settings extends Component {
     async ionViewWillEnter() {
         const info = await Device.getInfo()
         console.log(info)
-        this.setState({info})
+        this.setState({ info })
     }
 
     handleBackBtn = () => {
@@ -30,7 +35,7 @@ class Settings extends Component {
 
     render() {
 
-        const { user } = this.props
+        const { user, lan } = this.props
         const { info } = this.state
 
         return (
@@ -41,8 +46,8 @@ class Settings extends Component {
                             <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Settings</IonTitle>
-                        
+                        <IonTitle>{LOCALES[lan]['settings']['settings_title']}</IonTitle>
+
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
@@ -51,7 +56,7 @@ class Settings extends Component {
                             <IonGrid style={{ paddingLeft: '0px' }}>
                                 <IonRow>
                                     <IonCol style={{ paddingLeft: '0px' }}>
-                                        <IonLabel className="formInputTitle" >Name</IonLabel>
+                                        <IonLabel className="formInputTitle" >{LOCALES[lan]['settings']['name']}</IonLabel>
                                         <IonLabel className="formInput" >{user.firstName + ' ' + user.lastName}</IonLabel>
                                     </IonCol>
                                 </IonRow>
@@ -61,7 +66,7 @@ class Settings extends Component {
                             <IonGrid style={{ paddingLeft: '0px' }}>
                                 <IonRow>
                                     <IonCol style={{ paddingLeft: '0px' }}>
-                                        <IonLabel className="formInputTitle" >Username</IonLabel>
+                                        <IonLabel className="formInputTitle" >{LOCALES[lan]['settings']['username']}</IonLabel>
                                         <IonLabel >{user.username}</IonLabel>
                                     </IonCol>
                                 </IonRow>
@@ -71,14 +76,14 @@ class Settings extends Component {
                             <IonGrid style={{ paddingLeft: '0px' }}>
                                 <IonRow>
                                     <IonCol style={{ paddingLeft: '0px' }}>
-                                        <IonLabel className="formInputTitle" >Email</IonLabel>
+                                        <IonLabel className="formInputTitle" >{LOCALES[lan]['settings']['email']}</IonLabel>
                                         <IonLabel >{user.email}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
                         </IonItem>
-                        
-                        <IonItem lines="full" button detail>
+
+                        {/* <IonItem lines="full" button detail>
                             <IonGrid style={{ paddingLeft: '0px' }}>
                                 <IonRow>
                                     <IonCol style={{ paddingLeft: '0px' }}>
@@ -86,12 +91,12 @@ class Settings extends Component {
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
-                        </IonItem>
+                        </IonItem> */}
                         <IonItem lines="full" button detail>
                             <IonGrid style={{ paddingLeft: '0px' }}>
                                 <IonRow>
                                     <IonCol style={{ paddingLeft: '0px' }}>
-        <IonLabel className="formInputTitle" >{info.platform === 'ios' ? 'iOS' : 'Android'} v{info.appVersion ? info.appVersion : '1.0.0'}</IonLabel>
+                                        <IonLabel className="formInputTitle" >{info.platform === 'ios' ? 'iOS' : 'Android'} v{info.appVersion ? info.appVersion : '1.0.0'}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
@@ -104,10 +109,11 @@ class Settings extends Component {
     }
 }
 
-function mapStateToProps({ auth, user }) {
+function mapStateToProps({ auth, user, device }) {
     return {
         token: auth.token,
         user,
+        lan: device ? device.language : 'en'
     }
 }
 

@@ -15,6 +15,12 @@ import { approvePaymentRequest, rejectPaymentRequest, getInbox } from '../utils/
 // Actions
 import { saveInbox } from '../actions/inbox'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 const moment = require('moment')
 
 class PaymentRequest extends Component {
@@ -82,7 +88,7 @@ class PaymentRequest extends Component {
 
     render() {
         const { requestId } = this.props.match.params
-        const { inbox } = this.props
+        const { inbox, lan } = this.props
         const paymentRequest = (Object.values(inbox).filter(r => r.id !== requestId))[0]
 
         if (!paymentRequest || !requestId) {
@@ -97,41 +103,41 @@ class PaymentRequest extends Component {
                             <IonButton onClick={e => {e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Payment Request Details</IonTitle>
+                        <IonTitle>{LOCALES[lan]['payment_request']['payment_request_title']}</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent >
                     <IonList>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Request ID</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['request_id']}</IonLabel>
                             <IonInput className="formInput" readonly value={requestId}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">From</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['from']}</IonLabel>
                             <IonInput className="formInput" readonly value={paymentRequest.user.firstName + ' ' + paymentRequest.user.lastName}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Amount</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['amount']}</IonLabel>
                             <IonInput className="formInput" readonly value={parseFloat(paymentRequest.amount)}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Reason</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['reason']}</IonLabel>
                             <IonInput className="formInput" readonly value={paymentRequest.reason}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Description</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['description']}</IonLabel>
                             <IonTextarea className="formInput" readonly value={paymentRequest.description}></IonTextarea >
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Date</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['payment_request']['date']}</IonLabel>
                             <IonInput readonly value={moment(paymentRequest.createdAt).format('DD/MM/YYYY')}></IonInput>
                         </IonItem>
                     </IonList>
                     <IonGrid style={{  width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <IonButton onClick={this.handleConfirmBtn} color="primary" expand="block" >Confirm Payment</IonButton>
-                                <IonButton onClick={this.handleRejectBtn} color="dark" expand="block"  >Reject Payment</IonButton>
+                                <IonButton onClick={this.handleConfirmBtn} color="primary" expand="block">{LOCALES[lan]['payment_request']['confirm_btn']}</IonButton>
+                                <IonButton onClick={this.handleRejectBtn} color="dark" expand="block">{LOCALES[lan]['payment_request']['reject_btn']}</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -154,10 +160,11 @@ class PaymentRequest extends Component {
     }
 }
 
-function mapStateToProps({ auth, inbox }) {
+function mapStateToProps({ auth, inbox, device }) {
     return {
         token: auth.token,
         inbox,
+        lan: device ? device.language : 'en'
     }
 }
 

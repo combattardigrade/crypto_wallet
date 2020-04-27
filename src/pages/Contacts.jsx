@@ -8,6 +8,11 @@ import {
     chevronBackOutline, personCircleOutline, ellipsisVerticalOutline, addOutline
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 class Contacts extends Component {
     state = {
@@ -22,39 +27,39 @@ class Contacts extends Component {
         this.props.history.goBack()
     }
 
-    handleContactDetailsClick = (contactId) => {        
+    handleContactDetailsClick = (contactId) => {
         console.log(contactId)
         this.props.history.push('/contact/' + contactId)
     }
 
     render() {
 
-        const { contacts } = this.props        
+        const { contacts, lan } = this.props
 
         return (
             <IonPage>
                 <IonHeader>
                     <IonToolbar color="primary" className="jiwardsToolbar">
                         <IonButtons slot="start">
-                            <IonButton onClick={e => {e.preventDefault(); this.handleBackBtn()}}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
+                            <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn() }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Contacts</IonTitle>
+                        <IonTitle>{LOCALES[lan]['contacts']['contacts_title']}</IonTitle>
                         <IonButtons slot="end">
-                            <IonButton onClick={e => {e.preventDefault(); this.props.history.push('/newContact')}}><IonIcon icon={addOutline}></IonIcon></IonButton>
+                            <IonButton onClick={e => { e.preventDefault(); this.props.history.push('/newContact') }}><IonIcon icon={addOutline}></IonIcon></IonButton>
                         </IonButtons>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
                     <IonList >
                         <IonItemDivider>
-                            <IonLabel>All Contacts</IonLabel>
+                            <IonLabel>{LOCALES[lan]['contacts']['all_contacts']}</IonLabel>
                         </IonItemDivider>
                         {
                             contacts && Object.values(contacts).length > 0
                                 ?
                                 Object.values(contacts).map((contact, i) => (
-                                    <IonItem key={i} color="white" detail button onClick={ e => { e.preventDefault(); this.handleContactDetailsClick(contact.contactId);}}>
+                                    <IonItem key={i} color="white" detail button onClick={e => { e.preventDefault(); this.handleContactDetailsClick(contact.contactId); }}>
                                         <IonGrid>
                                             <IonRow>
                                                 <IonCol size="2">
@@ -63,14 +68,14 @@ class Contacts extends Component {
                                                 <IonCol >
                                                     <IonLabel className="txUsername">{contact.firstName + ' ' + contact.lastName}</IonLabel>
                                                     <IonLabel className="txReason">{contact.username}</IonLabel>
-                                                </IonCol>                                                
+                                                </IonCol>
                                             </IonRow>
                                         </IonGrid>
                                     </IonItem>
                                 ))
-                                : 
+                                :
                                 <IonItem lines="none" color="white">
-                                    <IonLabel>No contacts found</IonLabel>
+                                    <IonLabel>{LOCALES[lan]['contacts']['no_contacts']}</IonLabel>
                                 </IonItem>
                         }
                     </IonList>
@@ -81,10 +86,11 @@ class Contacts extends Component {
     }
 }
 
-function mapStateToProps({ auth, contacts }) {
+function mapStateToProps({ auth, contacts, device }) {
     return {
         token: auth.token,
         contacts,
+        lan: device && device.language
     }
 }
 

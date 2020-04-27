@@ -14,6 +14,11 @@ import { searchContact, addContact, getContacts } from '../utils/api'
 // Actions
 import { saveContacts } from '../actions/contacts'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 class NewContact extends Component {
     state = {
@@ -71,14 +76,14 @@ class NewContact extends Component {
                             dispatch(saveContacts(res2.payload))
                             this.handleBackBtn()
                         })
-                } else {                    
+                } else {
                     this.showAlert(res.message, 'Error')
                 }
             })
             .catch((err) => {
                 console.log(err)
                 this.showAlert(err.message, 'Error')
-            })       
+            })
     }
 
     showAlert = (msg, title) => {
@@ -92,13 +97,14 @@ class NewContact extends Component {
     render() {
 
         const { searchResults } = this.state
+        const { lan } = this.props
 
         return (
             <IonPage>
                 <IonHeader>
                     <IonToolbar color="primary" className="jiwardsToolbar">
 
-                        <IonTitle>Add New Contact</IonTitle>
+                        <IonTitle>{LOCALES[lan]['new_contact']['new_contact_title']}</IonTitle>
                         <IonButtons slot="end">
                             <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn() }}><IonIcon icon={close}></IonIcon></IonButton>
                         </IonButtons>
@@ -107,47 +113,47 @@ class NewContact extends Component {
                 <IonContent scrollY={false}>
                     <IonList>
                         <IonItem lines="full">
-                            <IonLabel position="stacked">Search</IonLabel>
-                            <IonInput name="amount" value={this.state.searchValue} onIonChange={this.handleSearchValueChange} type="text" placeholder="Search user by username or email"></IonInput>
+                            <IonLabel position="stacked">{LOCALES[lan]['new_contact']['search']}</IonLabel>
+                            <IonInput name="amount" value={this.state.searchValue} onIonChange={this.handleSearchValueChange} type="text" placeholder={LOCALES[lan]['new_contact']['input_search']}></IonInput>
                         </IonItem>
 
                     </IonList>
                     <IonItemDivider>
-                        <IonLabel>Search Results</IonLabel>
+                        <IonLabel>{LOCALES[lan]['new_contact']['search_results']}</IonLabel>
                     </IonItemDivider>
-                    <div style={{ height: '45vh', overflow: 'auto'}}>
-                    <IonList style={{ padding: 0, margin: 0 }}>
-                        {
-                            searchResults && searchResults.length > 0
-                                ?
-                                searchResults.map((contact) => (
-                                    <IonItem key={contact.id} color={contact.id === this.state.selectedContact ? 'primary' : 'white'} detail button onClick={e => { e.preventDefault(); this.handleContactClick(contact.id) }}>
-                                        <IonGrid>
-                                            <IonRow>
-                                                <IonCol size="2">
-                                                    <IonIcon style={{ fontSize: '48px' }} color={contact.id !== this.state.selectedContact ? 'primary' : 'white'} icon={personCircleOutline}></IonIcon>
-                                                </IonCol>
-                                                <IonCol>
-                                                    <IonLabel className="txUsername">{contact.firstName + ' ' + contact.lastName}</IonLabel>
-                                                    <IonLabel className="txReason">{contact.username}</IonLabel>
-                                                </IonCol>
+                    <div style={{ height: '45vh', overflow: 'auto' }}>
+                        <IonList style={{ padding: 0, margin: 0 }}>
+                            {
+                                searchResults && searchResults.length > 0
+                                    ?
+                                    searchResults.map((contact) => (
+                                        <IonItem key={contact.id} color={contact.id === this.state.selectedContact ? 'primary' : 'white'} detail button onClick={e => { e.preventDefault(); this.handleContactClick(contact.id) }}>
+                                            <IonGrid>
+                                                <IonRow>
+                                                    <IonCol size="2">
+                                                        <IonIcon style={{ fontSize: '48px' }} color={contact.id !== this.state.selectedContact ? 'primary' : 'white'} icon={personCircleOutline}></IonIcon>
+                                                    </IonCol>
+                                                    <IonCol>
+                                                        <IonLabel className="txUsername">{contact.firstName + ' ' + contact.lastName}</IonLabel>
+                                                        <IonLabel className="txReason">{contact.username}</IonLabel>
+                                                    </IonCol>
 
-                                            </IonRow>
-                                        </IonGrid>
-                                    </IonItem>
-                                ))
-                                :
-                                <IonItem lines="none"><IonLabel>No se encontraron resultados</IonLabel></IonItem>
+                                                </IonRow>
+                                            </IonGrid>
+                                        </IonItem>
+                                    ))
+                                    :
+                                    <IonItem lines="none"><IonLabel>{LOCALES[lan]['new_contact']['no_results']}</IonLabel></IonItem>
 
-                        }
-                    </IonList>
+                            }
+                        </IonList>
                     </div>
 
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <IonButton onClick={this.handleAddContactBtn} color="primary" expand="block" >Add Contact</IonButton>
-                                <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }} color="dark" expand="block"  >Cancel </IonButton>
+                                <IonButton onClick={this.handleAddContactBtn} color="primary" expand="block" >{LOCALES[lan]['new_contact']['add_contact_btn']}</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }} color="dark" expand="block"  >{LOCALES[lan]['new_contact']['cancel_btn']}</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -169,10 +175,11 @@ class NewContact extends Component {
     }
 }
 
-function mapStateToProps({ auth, contacts }) {
+function mapStateToProps({ auth, contacts, device }) {
     return {
         token: auth.token,
         contacts,
+        lan: device && device.language
     }
 }
 

@@ -11,6 +11,12 @@ import {
 // API
 import { withdrawTokens } from '../utils/api'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 class Withdraw extends Component {
     state = {
         address: '',
@@ -76,6 +82,9 @@ class Withdraw extends Component {
     }
 
     render() {
+
+        const { lan } = this.props
+
         return (
             <IonPage>
                 <IonHeader>
@@ -84,19 +93,18 @@ class Withdraw extends Component {
                             <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Withdraw</IonTitle>
-
+                        <IonTitle>{LOCALES[lan]['withdraw']['withdraw_title']}</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent>
                     <IonList>
                         <IonItem lines="full">
-                            <IonLabel className="formInputTitle" position="stacked">ETH Address:</IonLabel>
-                            <IonInput value={this.state.address} onIonChange={this.handleAddressChange} className="formInput" placeholder="External Ethereum Address" ></IonInput>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['withdraw']['eth_address']}:</IonLabel>
+                            <IonInput value={this.state.address} onIonChange={this.handleAddressChange} className="formInput" placeholder={LOCALES[lan]['withdraw']['input_address']} ></IonInput>
                         </IonItem>
                         <IonItem lines="full">
-                            <IonLabel className="formInputTitle" position="stacked">Amount</IonLabel>
-                            <IonInput value={this.state.amount} onIonChange={this.handleAmountChange} className="formInput" placeholder="Enter the amount to transfer"></IonInput>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['withdraw']['amount']}</IonLabel>
+                            <IonInput value={this.state.amount} onIonChange={this.handleAmountChange} className="formInput" placeholder={LOCALES[lan]['withdraw']['input_amount']}></IonInput>
                         </IonItem>
 
                     </IonList>
@@ -104,8 +112,8 @@ class Withdraw extends Component {
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <ion-button onClick={this.handleWithdrawBtn} color="primary" expand="block" >Withdraw</ion-button>
-                                <ion-button color="dark" onClick={e => { e.preventDefault(); this.handleBackBtn(); }} expand="block" type="submit" >Cancel</ion-button>
+                                <ion-button onClick={this.handleWithdrawBtn} color="primary" expand="block" >{LOCALES[lan]['withdraw']['withdraw_btn']}</ion-button>
+                                <ion-button color="dark" onClick={e => { e.preventDefault(); this.handleBackBtn(); }} expand="block" type="submit" >{LOCALES[lan]['withdraw']['cancel_btn']}</ion-button>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -129,9 +137,10 @@ class Withdraw extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, device }) {
     return {
         token: auth.token,
+        lan: device && device.language
 
     }
 }

@@ -8,10 +8,16 @@ import {
     chevronBackOutline, copyOutline, ellipsisVerticalOutline
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+
+
 // Plugins
 import { Plugins } from '@capacitor/core'
 const { Clipboard } = Plugins
-
+const LOCALES = { en, fr, nl }
 const QRCode = require('qrcode.react');
 
 
@@ -37,7 +43,7 @@ class Receive extends Component {
 
     render() {
 
-        const { user } = this.props
+        const { user, lan } = this.props
 
         return (
             <IonPage>
@@ -47,7 +53,7 @@ class Receive extends Component {
                             <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn(); }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Deposit JWS</IonTitle>
+                        <IonTitle>{LOCALES[lan]['deposit']['deposit_title']}</IonTitle>
                     </IonToolbar>
                 </IonHeader>
                 <IonContent scrollY={false}>
@@ -64,7 +70,7 @@ class Receive extends Component {
                         <IonGrid>
                             <IonRow>
                                 <IonCol size="9">
-                                    <IonLabel style={{ fontSize: '12px', color: 'grey' }}>Your Ethereum Address: </IonLabel>
+                                    <IonLabel style={{ fontSize: '12px', color: 'grey' }}>{LOCALES[lan]['deposit']['ethereum_address']}: </IonLabel>
                                 </IonCol>
                             </IonRow>
                             <IonRow>
@@ -91,11 +97,11 @@ class Receive extends Component {
     }
 }
 
-function mapStateToProps({ auth, user }) {
+function mapStateToProps({ auth, user, device }) {
     return {
         token: auth.token,
         user,
-
+        lan: device && device.language
     }
 }
 

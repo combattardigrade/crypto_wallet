@@ -12,6 +12,11 @@ import {
 // Actions
 import { saveTransfer } from '../actions/transfer';
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 class Send extends Component {
 
@@ -102,15 +107,15 @@ class Send extends Component {
 
     render() {
 
-        const { txReasons, contacts } = this.props
+        const { txReasons, contacts, lan } = this.props
 
         return (
             <Fragment>
                 <IonList>
                     <IonItem>
-                        <IonLabel position="stacked">Send To</IonLabel>
+                        <IonLabel position="stacked">{LOCALES[lan]['send']['send_to']}</IonLabel>
                         {/* <IonInput name="to" value={this.state.to} onIonChange={this.handleToChange} type="text" placeholder="Username or Email"></IonInput> */}
-                        <IonSelect value={this.state.contact} name="contact" placeholder="Select a contact" onIonChange={this.handleContactChange}>
+                        <IonSelect value={this.state.contact} name="contact" placeholder={LOCALES[lan]['send']['input_send']} onIonChange={this.handleContactChange}>
                             {
                                 contacts && Object.values(contacts).length > 0
                                     ?
@@ -123,12 +128,12 @@ class Send extends Component {
                         </IonSelect>
                     </IonItem>
                     <IonItem>
-                        <IonLabel position="stacked">Amount</IonLabel>
-                        <IonInput name="amount" value={this.state.amount} onIonChange={this.handleAmountChange} type="number" placeholder="Enter the amount to transfer"></IonInput>
+                        <IonLabel position="stacked">{LOCALES[lan]['send']['amount']}</IonLabel>
+                        <IonInput name="amount" value={this.state.amount} onIonChange={this.handleAmountChange} type="number" placeholder={LOCALES[lan]['send']['input_amount']}></IonInput>
                     </IonItem>
                     <IonItem>
-                        <IonLabel position="stacked">Reason</IonLabel>
-                        <IonSelect name="reason" value={this.state.reason} placeholder="Select reason" onIonChange={this.handleReasonChange}>
+                        <IonLabel position="stacked">{LOCALES[lan]['send']['reason']}</IonLabel>
+                        <IonSelect name="reason" value={this.state.reason} placeholder={LOCALES[lan]['send']['input_reason']} onIonChange={this.handleReasonChange}>
 
                             {
                                 txReasons && Object.values(txReasons).length > 0
@@ -143,14 +148,14 @@ class Send extends Component {
                     </IonItem>
 
                     <IonItem>
-                        <IonLabel position="stacked">Description</IonLabel>
-                        <IonInput name="description" value={this.state.description} onIonChange={this.handleDescriptionChange} type="text" placeholder="Enter a description"></IonInput>
+                        <IonLabel position="stacked">{LOCALES[lan]['send']['description']}</IonLabel>
+                        <IonInput name="description" value={this.state.description} onIonChange={this.handleDescriptionChange} type="text" placeholder={LOCALES[lan]['send']['input_description']}></IonInput>
                     </IonItem>
 
                     <IonGrid style={{ width: '100%', marginTop: '10px' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <ion-button onClick={this.handleVerifyBtn} color="primary" expand="block" type="submit" >Verify Transfer</ion-button>
+                                <ion-button onClick={this.handleVerifyBtn} color="primary" expand="block" type="submit" >{LOCALES[lan]['send']['verify_transfer']}</ion-button>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -174,12 +179,13 @@ class Send extends Component {
     }
 }
 
-function mapStateToProps({ auth, user, txReasons, contacts }) {
+function mapStateToProps({ auth, user, txReasons, contacts, device }) {
     return {
         token: auth.token,
         txReasons,
         user,
         contacts,
+        lan: device && device.language
     }
 }
 

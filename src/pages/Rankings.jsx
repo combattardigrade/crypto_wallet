@@ -8,6 +8,11 @@ import {
     personCircleOutline
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 class Rankings extends Component {
     state = {
@@ -27,10 +32,10 @@ class Rankings extends Component {
 
     render() {
 
-        const { rankings } = this.props
+        const { rankings, lan } = this.props
         const { period } = this.state
 
-        if(!rankings || !period) {
+        if (!rankings || !period) {
             return <IonItem><IonLabel>Loading...</IonLabel></IonItem>
         }
 
@@ -38,12 +43,12 @@ class Rankings extends Component {
             <Fragment>
                 <IonItem lines="none">
 
-                    <IonLabel className="rankingsCategoryTitle">Category</IonLabel>
+                    <IonLabel className="rankingsCategoryTitle">{LOCALES[lan]['rankings']['category']}</IonLabel>
 
-                    <IonSelect value={this.state.category} okText="Okay" cancelText="Dismiss" onIonChange={e => this.handleCategoryChange(e.detail.value)}>
+                    {/* <IonSelect value={this.state.category} okText="Okay" cancelText="Dismiss" onIonChange={e => this.handleCategoryChange(e.detail.value)}>
                         <IonSelectOption value="all">All</IonSelectOption>
 
-                    </IonSelect>
+                    </IonSelect> */}
 
                 </IonItem>
 
@@ -51,13 +56,13 @@ class Rankings extends Component {
                     <IonGrid>
                         <IonRow>
                             <IonCol>
-                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('year') }} color={period === 'year' ? 'primary' : 'light'} expand="full">YEAR</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('year') }} color={period === 'year' ? 'primary' : 'light'} expand="full">{LOCALES[lan]['rankings']['year']}</IonButton>
                             </IonCol>
                             <IonCol>
-                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('month') }} color={period === 'month' ? 'primary' : 'light'} expand="full">MONTH</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('month') }} color={period === 'month' ? 'primary' : 'light'} expand="full">{LOCALES[lan]['rankings']['month']}</IonButton>
                             </IonCol>
                             <IonCol>
-                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('week') }} color={period === 'week' ? 'primary' : 'light'} expand="full">WEEK</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handlePeriodChange('week') }} color={period === 'week' ? 'primary' : 'light'} expand="full">{LOCALES[lan]['rankings']['week']}</IonButton>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -77,7 +82,7 @@ class Rankings extends Component {
                                 <IonGrid>
                                     <IonRow>
                                         <IonCol size="1" style={{ textAlign: 'center' }}>
-                                            <IonLabel className="rankingsIndex">{i+1}</IonLabel>
+                                            <IonLabel className="rankingsIndex">{i + 1}</IonLabel>
                                         </IonCol>
                                         <IonCol size="2">
                                             <IonIcon style={{ fontSize: '48px' }} color="primary" icon={personCircleOutline}></IonIcon>
@@ -105,10 +110,11 @@ class Rankings extends Component {
     }
 }
 
-function mapStateToProps({ auth, rankings }) {
+function mapStateToProps({ auth, rankings, device }) {
     return {
         token: auth.token,
-        rankings
+        rankings,
+        lan: device && device.language
     }
 }
 

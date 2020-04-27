@@ -5,7 +5,7 @@ import { IonApp, IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux'
-import { Plugins } from '@capacitor/core';
+
 
 
 
@@ -43,11 +43,40 @@ import NewContact from './pages/NewContact'
 import ContactDetails from './pages/ContactDetails'
 import PaymentRequest from './pages/PaymentRequest'
 
+
+
+// Actions
+import { saveLanguage, saveDeviceData } from './actions/device'
+
+// Plugins
+import { Plugins } from '@capacitor/core'
+const { Device } = Plugins
+
 class App extends Component {
 
   state = {
     selectedPage: '',
     setSelectedPage: ''
+  }
+
+  componentDidMount = async () => {
+    const { dispatch } = this.props
+    let lan, deviceData
+    const languages = ['en', 'fr', 'nl']
+
+    try {
+      deviceData = await Device.getInfo()
+      lan = await Device.getLanguageCode()
+      lan = lan.value.split('-')[0]
+    } catch (e) {
+      console.log(e)
+      lan = 'en'
+    }
+
+    lan = languages.includes(lan) ? lan : 'en'
+
+    dispatch(saveLanguage(lan)) 
+    dispatch(saveDeviceData(deviceData))
   }
 
   render() {
@@ -64,9 +93,9 @@ class App extends Component {
               <Route path="/intro" component={Intro} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
-              <PrivateRoute path='/main' component={Main} auth={auth}/>
-              <PrivateRoute path='/withdraw' component={Withdraw} auth={auth}/>
-              <PrivateRoute path='/settings' component={Settings} auth={auth}/>
+              <PrivateRoute path='/main' component={Main} auth={auth} />
+              <PrivateRoute path='/withdraw' component={Withdraw} auth={auth} />
+              <PrivateRoute path='/settings' component={Settings} auth={auth} />
               <PrivateRoute path='/tx/:id' component={TxDetails} auth={auth} />
               <PrivateRoute path="/receive" component={Receive} auth={auth} />
               <PrivateRoute path='/txStatus/:status' component={TxStatus} auth={auth} />

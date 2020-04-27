@@ -11,6 +11,11 @@ import {
 } from 'ionicons/icons'
 import { MdCallMade, MdCallReceived } from 'react-icons/md'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 const moment = require('moment')
 
 class Wallet extends Component {
@@ -35,7 +40,7 @@ class Wallet extends Component {
     render() {
 
         const { selectedTxType } = this.state
-        const { user, transactions, handleChangeTab } = this.props
+        const { user, transactions, handleChangeTab, lan } = this.props
 
         const balance = user ? 'balances' in user ? parseFloat(user.balances[0].amount) : 0.0 : 0.0
 
@@ -58,15 +63,15 @@ class Wallet extends Component {
                             <IonRow style={{ marginTop: '20px' }}>
                                 <IonCol style={{ textAlign: 'center' }} size="3" offset="1.5">
                                     <a className="walletBtn" onClick={e => {e.preventDefault(); handleChangeTab('tab-send'); }}><MdCallMade style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
-                                    <IonLabel className="walletBtnSubtitle">Send</IonLabel>
+                                    <IonLabel className="walletBtnSubtitle">{LOCALES[lan]['wallet']['wallet_send_btn']}</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
                                     <a className="walletBtn" onClick={e => { e.preventDefault(); this.props.history.push('/receive')}}><MdCallReceived style={{ paddingTop: '10px', fontSize: '28px' }} color="white" /></a>
-                                    <IonLabel className="walletBtnSubtitle">Receive</IonLabel>
+                                    <IonLabel className="walletBtnSubtitle">{LOCALES[lan]['wallet']['wallet_receive_btn']}</IonLabel>
                                 </IonCol>
                                 <IonCol style={{ textAlign: 'center' }} size="3">
                                     <a onClick={e => {e.preventDefault(); this.props.history.push('/withdraw')}} className="walletBtn" ><IonIcon icon={cloudUploadOutline}></IonIcon></a>
-                                    <IonLabel className="walletBtnSubtitle">Withdraw</IonLabel>
+                                    <IonLabel className="walletBtnSubtitle">{LOCALES[lan]['wallet']['wallet_withdraw_btn']}</IonLabel>
                                 </IonCol>
                             </IonRow>
                         </IonGrid>
@@ -78,13 +83,13 @@ class Wallet extends Component {
                     <IonGrid style={{ height: '100%', padding: '0px' }}>
                         <IonRow style={{ height: '100%' }}>
                             <IonCol size="4" style={{ textAlign: 'center' }}>
-                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('all') }} className={selectedTxType == 'all' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'} >All</IonLabel>
+                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('all') }} className={selectedTxType == 'all' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'} >{LOCALES[lan]['wallet']['wallet_txs_all_btn']}</IonLabel>
                             </IonCol>
                             <IonCol size="4" style={{ textAlign: 'center' }}>
-                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('received') }} className={selectedTxType == 'received' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'}>Received</IonLabel>
+                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('received') }} className={selectedTxType == 'received' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'}>{LOCALES[lan]['wallet']['wallet_txs_received_btn']}</IonLabel>
                             </IonCol>
                             <IonCol size="4" style={{ textAlign: 'center' }}>
-                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('sent') }} className={selectedTxType == 'sent' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'}>Sent</IonLabel>
+                                <IonLabel onClick={e => { e.preventDefault(); this.handleSelectedTxType('sent') }} className={selectedTxType == 'sent' ? 'walletTxSelectBtnActive' : 'walletTxSelectBtn'}>{LOCALES[lan]['wallet']['wallet_txs_sent_btn']}</IonLabel>
                             </IonCol>
                         </IonRow>
                     </IonGrid>
@@ -151,11 +156,12 @@ class Wallet extends Component {
     }
 }
 
-function mapStateToProps({ auth, user, transactions }) {
+function mapStateToProps({ auth, user, transactions, device }) {
     return {
         token: auth.token,
         user,
         transactions,
+        lan: device && device.language
     }
 }
 

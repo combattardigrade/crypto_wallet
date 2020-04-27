@@ -29,10 +29,16 @@ import { menuController } from '@ionic/core';
 // Actions
 import { userLogout } from '../actions/auth'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+
+
 //  Plugins
 import { Plugins } from '@capacitor/core';
 const { Browser } = Plugins;
-
+const LOCALES = { en, fr, nl }
 
 class Menu extends Component {
   goToPage = (page) => {
@@ -54,7 +60,7 @@ class Menu extends Component {
   }
 
   render() {
-    const { user } = this.props
+    const { user, lan } = this.props
 
 
     return (
@@ -75,19 +81,19 @@ class Menu extends Component {
             <IonListHeader>Menu</IonListHeader>
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('contacts') }}>
               <IonIcon icon={peopleOutline}></IonIcon>
-              <IonLabel style={{ marginLeft: '10px' }}>Contacts</IonLabel>
+              <IonLabel style={{ marginLeft: '10px' }}>{LOCALES[lan]['menu']['contacts']}</IonLabel>
             </IonItem>
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('receive') }}>
               <IonIcon icon={cloudDownloadOutline}></IonIcon>
-              <IonLabel style={{ marginLeft: '10px' }}>Deposit</IonLabel>
+              <IonLabel style={{ marginLeft: '10px' }}>{LOCALES[lan]['menu']['deposit']}</IonLabel>
             </IonItem>
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('withdraw') }}>
               <IonIcon icon={cloudUploadOutline}></IonIcon>
-              <IonLabel style={{ marginLeft: '10px' }}>Withdraw</IonLabel>
+              <IonLabel style={{ marginLeft: '10px' }}>{LOCALES[lan]['menu']['withdraw']}</IonLabel>
             </IonItem>
             <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('settings') }}>
               <IonIcon icon={settingsOutline}></IonIcon>
-              <IonLabel style={{ marginLeft: '10px' }}>Settings</IonLabel>
+              <IonLabel style={{ marginLeft: '10px' }}>{LOCALES[lan]['menu']['settings']}</IonLabel>
             </IonItem>
             {/* <IonItem lines="full" button onClick={e => { e.preventDefault(); this.goToPage('settings') }}>
               <IonIcon icon={businessOutline}></IonIcon>
@@ -96,7 +102,7 @@ class Menu extends Component {
           </IonList>
 
           <IonItem lines="none" button style={{ position: 'absolute', bottom: '20px', width: '100%' }} onClick={this.handleUserLogout} >
-            <IonLabel style={{ textAlign: 'center' }}>Log out</IonLabel>
+            <IonLabel style={{ textAlign: 'center' }}>{LOCALES[lan]['menu']['logout']}</IonLabel>
           </IonItem>
         </IonContent>
       </IonMenu>
@@ -105,9 +111,10 @@ class Menu extends Component {
 
 };
 
-function mapStateToProps({ user }) {
+function mapStateToProps({ user, device }) {
   return {
-    user
+    user,
+    lan: device && device.language
   }
 }
 export default withRouter(connect(mapStateToProps)(Menu))

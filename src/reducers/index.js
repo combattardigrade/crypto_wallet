@@ -7,6 +7,7 @@ import txReasons from './txReasons'
 import transfer from './transfer'
 import contacts from './contacts'
 import inbox from './inbox'
+import device from './device'
 import storage from 'redux-persist/lib/storage'
 
 const appReducer = combineReducers({    
@@ -17,6 +18,7 @@ const appReducer = combineReducers({
     transfer,
     contacts,
     inbox,
+    device,
     transactions,
 })
 

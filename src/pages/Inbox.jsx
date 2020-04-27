@@ -9,6 +9,11 @@ import {
     personCircleOutline, ellipsisVerticalOutline
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 const moment = require('moment')
 
@@ -17,14 +22,14 @@ class Inbox extends Component {
 
     }
 
-    handlePaymentRequestClick = (requestId) => {        
+    handlePaymentRequestClick = (requestId) => {
         // console.log(requestId)
         this.props.history.push('/paymentRequest/' + requestId)
     }
 
     render() {
 
-        const { inbox } = this.props
+        const { inbox, lan } = this.props
 
         return (
             <Fragment>
@@ -32,14 +37,14 @@ class Inbox extends Component {
                 <IonList>
                     <IonItemDivider>
                         <IonLabel>
-                            Transactions Pending Approval
-                    </IonLabel>
+                            {LOCALES[lan]['inbox']['transactions_pending_approval']}
+                        </IonLabel>
                     </IonItemDivider>
                     {
                         inbox && Object.values(inbox).length > 0
                             ?
                             Object.values(inbox).map((t, i) => (
-                                <IonItem onClick={e => { e.preventDefault(); this.handlePaymentRequestClick(t.id)}} key={i} button detail>
+                                <IonItem onClick={e => { e.preventDefault(); this.handlePaymentRequestClick(t.id) }} key={i} button detail>
                                     <IonGrid>
                                         <IonRow>
                                             <IonCol size="2">
@@ -59,7 +64,7 @@ class Inbox extends Component {
                             ))
                             :
                             <IonItem lines="none">
-                                <IonLabel>No payment requests found</IonLabel>
+                                <IonLabel>{LOCALES[lan]['inbox']['no_payments']}</IonLabel>
                             </IonItem>
                     }
                 </IonList>
@@ -69,10 +74,11 @@ class Inbox extends Component {
     }
 }
 
-function mapStateToProps({ auth, inbox }) {
+function mapStateToProps({ auth, inbox, device }) {
     return {
         token: auth.token,
-        inbox
+        inbox,
+        lan: device && device.language
     }
 }
 

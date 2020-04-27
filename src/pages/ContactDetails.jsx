@@ -14,6 +14,11 @@ import { deleteContact, getContacts } from '../utils/api';
 // Actions
 import { saveContacts } from '../actions/contacts'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
 
 class ContactDetails extends Component {
     state = {
@@ -68,12 +73,12 @@ class ContactDetails extends Component {
 
     render() {
         const { contactId } = this.props.match.params
-        const { contacts } = this.props
+        const { contacts, lan } = this.props
         const contact = (Object.values(contacts).filter(c => c.contactId !== contactId))[0]
 
         if(!contactId || !contact) {
             return (
-                <IonLabel>Loading...</IonLabel>
+                <IonLabel>{LOCALES[lan]['contact_details']['loading']}</IonLabel>
             )
         }
 
@@ -92,19 +97,19 @@ class ContactDetails extends Component {
                 <IonContent scrollY={false}>
                     <IonList>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">USER ID</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['contact_details']['user_id']}</IonLabel>
                             <IonInput className="formInput" readonly value={contact.contactId}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Username</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['contact_details']['username']}</IonLabel>
                             <IonInput className="formInput" readonly value={contact.username}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Full Name</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['contact_details']['full_name']}</IonLabel>
                             <IonInput className="formInput" readonly value={contact.firstName + ' ' + contact.lastName}></IonInput>
                         </IonItem>
                         <IonItem>
-                            <IonLabel className="formInputTitle" position="stacked">Email</IonLabel>
+                            <IonLabel className="formInputTitle" position="stacked">{LOCALES[lan]['contact_details']['email']}</IonLabel>
                             <IonInput className="formInput" readonly value={contact.email}></IonInput>
                         </IonItem>
 
@@ -113,7 +118,7 @@ class ContactDetails extends Component {
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <IonButton onClick={this.handleDeleteBtn} color="danger" expand="block" >Delete Contact</IonButton>
+                                <IonButton onClick={this.handleDeleteBtn} color="danger" expand="block" >{LOCALES[lan]['contact_details']['delete_contact_btn']}</IonButton>
 
                             </IonCol>
                         </IonRow>
@@ -159,10 +164,11 @@ class ContactDetails extends Component {
     }
 }
 
-function mapStateToProps({ auth, contacts }) {
+function mapStateToProps({ auth, contacts, device }) {
     return {
         token: auth.token,
-        contacts
+        contacts,
+        lan: device && device.language
     }
 }
 
