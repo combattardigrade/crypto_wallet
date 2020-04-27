@@ -55,10 +55,10 @@ class NewContact extends Component {
     handleAddContactBtn = (e) => {
         e.preventDefault()
         const { selectedContact } = this.state
-        const { token, dispatch } = this.props
+        const { token, dispatch, lan } = this.props
 
         if (!selectedContact) {
-            this.showAlert('Select a contact to add', 'Error')
+            this.showAlert(LOCALES[lan]['error']['select_contact'], 'Error')
             return
         }
 

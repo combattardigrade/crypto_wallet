@@ -15,10 +15,14 @@ import { personCircleOutline } from 'ionicons/icons'
 // Styles
 import './styles-dark.css'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 // Images
 const logo = require('../components/logo.png')
-
-
 
 class Login extends Component {
 
@@ -49,11 +53,13 @@ class Login extends Component {
     handleSubmit = async (e) => {
         e.preventDefault()
 
+        const { lan } = this.props
+
         const email = e.target.email.value
         const password = e.target.password.value
         
         if (!email || !password) {
-            this.showAlert('Enter all the required fields', 'Error')
+            this.showAlert(LOCALES[lan]['error']['missing_required'], 'Error')
             return
         }
 
@@ -63,12 +69,12 @@ class Login extends Component {
         }
         catch (err) {
             console.log(err)
-            this.showAlert('An error occurred, please try again', 'Error')
+            this.showAlert(LOCALES[lan]['error']['general'], 'Error')
             return
         }
 
         if (response.status != 'OK') {
-            this.showAlert('message' in response ? response.message : 'An error occurred, please try again', 'Error')
+            this.showAlert('message' in response ? response.message : LOCALES[lan]['error']['general'], 'Error')
             return
         }
         // save jwt
@@ -85,6 +91,9 @@ class Login extends Component {
 
 
     render() {
+
+        const { lan } = this.props
+
         return (
             <IonPage>
 
@@ -97,36 +106,36 @@ class Login extends Component {
 
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                                <IonLabel className='authTitle'>LOG IN</IonLabel>
+                                <IonLabel className='authTitle'>{LOCALES[lan]['login']['login_title']}</IonLabel>
                             </div>
                             <div style={{ padding: 15 }}>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="email" placeholder="Email" name="email"></ion-input>
+                                    <ion-input type="email" placeholder={LOCALES[lan]['login']['email']} name="email"></ion-input>
                                 </IonItem>
 
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="password" placeholder="Password" name="password"></ion-input>
+                                    <ion-input type="password" placeholder={LOCALES[lan]['login']['password']} name="password"></ion-input>
                                 </IonItem>
                             </div>
 
                             <IonGrid>
                                 <IonRow>
                                     <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                        <ion-button color="light" expand="block" type="submit" >Log In</ion-button>
+                                        <ion-button color="light" expand="block" type="submit" >{LOCALES[lan]['login']['login_btn']}</ion-button>
                                     </IonCol>
                                 </IonRow>
 
                                 <IonRow style={{ marginTop: '5px' }}>
                                     <IonCol style={{ textAlign: 'center' }}>
                                         <IonButton fill="clear" >
-                                            <IonNote onClick={this.goToSignup} style={{ fontSize: '0.8em', color: 'white' }}>Forgot your password?</IonNote>
+                                            <IonNote onClick={this.goToSignup} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['forgot_password']}</IonNote>
                                         </IonButton>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
                         </form>
                         <div style={{ bottom: '20px', position: 'absolute' }}>
-                            <IonNote onClick={e => {e.preventDefault(); this.goToPage('signup')}} style={{ fontSize: '0.8em', color: 'white' }}>Create a New Account</IonNote>
+                            <IonNote onClick={e => {e.preventDefault(); this.goToPage('signup')}} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['create_account']}</IonNote>
                         </div>
                     </div>
                 </IonContent>
@@ -146,9 +155,10 @@ class Login extends Component {
     }
 }
 
-function mapStateToProps({ auth }) {
+function mapStateToProps({ auth, device }) {
     return {
-        token: auth && auth.token
+        token: auth && auth.token,
+        lan: device ? device.language : 'en'
     }
 }
 

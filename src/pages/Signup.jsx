@@ -17,6 +17,12 @@ import { saveToken } from '../actions/auth'
 // Styles
 import './styles-dark.css'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 // Images
 const logo = require('../components/logo.png')
 
@@ -44,6 +50,7 @@ class Signup extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault()
+        const { lan } = this.props
         const firstName = e.target.firstName.value
         const lastName = e.target.lastName.value
         const username = e.target.username.value
@@ -52,17 +59,17 @@ class Signup extends Component {
         const rpassword = e.target.rpassword.value
 
         if (!firstName || !lastName || !username || !email || !password || !rpassword || !password) {
-            this.showAlert('Enter all the required fields', 'Error')
+            this.showAlert(LOCALES[lan]['error']['missing_required'], 'Error')
             return
         }
 
         if (!emailValidator.validate(email)) {
-            this.showAlert('Enter a valid email', 'Error')
+            this.showAlert(LOCALES[lan]['error']['enter_valid_email'], 'Error')
             return
         }
 
         if (password !== rpassword) {
-            this.showAlert('The passwords do not match', 'Error')
+            this.showAlert(LOCALES[lan]['error']['passwords_dont_match'], 'Error')
             return
         }
 
@@ -72,12 +79,12 @@ class Signup extends Component {
         }
         catch (err) {
             console.log(err)
-            this.showAlert('An error occurred, please try again', 'Error')
+            this.showAlert(LOCALES[lan]['error']['general'], 'Error')
             return
         }
 
         if (response.status != 'OK') {
-            this.showAlert('message' in response ? response.message : 'An error occurred, please try again', 'Error')
+            this.showAlert('message' in response ? response.message : LOCALES[lan]['error']['general'], 'Error')
             return
         }
 
@@ -93,9 +100,10 @@ class Signup extends Component {
         this.props.history.replace('/signup')
     }
 
-
-
     render() {
+
+        const { lan } = this.props
+
         return (
             <IonPage>
 
@@ -108,33 +116,33 @@ class Signup extends Component {
                                 <img src={logo} style={{ height: '5em' }} />
                             </div>
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-                                <IonLabel className='authTitle'>SIGN UP</IonLabel>
+                                <IonLabel className='authTitle'>{LOCALES[lan]['signup']['signup_title']}</IonLabel>
                             </div>
                             <div style={{ padding: 15 }}>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="text" placeholder="First Name" name="firstName"></ion-input>
+                                    <ion-input type="text" placeholder={LOCALES[lan]['signup']['first_name']} name="firstName"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="text" placeholder="Last Name" name="lastName"></ion-input>
+                                    <ion-input type="text" placeholder={LOCALES[lan]['signup']['last_name']} name="lastName"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="text" placeholder="Username" name="username"></ion-input>
+                                    <ion-input type="text" placeholder={LOCALES[lan]['signup']['username']} name="username"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="email" placeholder="Email" name="email"></ion-input>
+                                    <ion-input type="email" placeholder={LOCALES[lan]['signup']['email']} name="email"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="password" placeholder="Password" name="password"></ion-input>
+                                    <ion-input type="password" placeholder={LOCALES[lan]['signup']['password']} name="password"></ion-input>
                                 </IonItem>
                                 <IonItem className="dark" lines="full">
-                                    <ion-input type="password" placeholder="Repeat Password" name="rpassword"></ion-input>
+                                    <ion-input type="password" placeholder={LOCALES[lan]['signup']['rpassword']} name="rpassword"></ion-input>
                                 </IonItem>
                             </div>
 
                             <IonGrid>
                                 <IonRow>
                                     <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                        <ion-button color="light" expand="block" type="submit" >Sign Up</ion-button>
+                                        <ion-button color="light" expand="block" type="submit" >{LOCALES[lan]['signup']['signup_btn']}</ion-button>
                                     </IonCol>
                                 </IonRow>
 
@@ -142,7 +150,7 @@ class Signup extends Component {
                             </IonGrid>
                         </form>
                         <div slot="fixed" style={{ bottom: '20px', position: 'absolute' }}>
-                            <IonNote onClick={e => { e.preventDefault(); this.goToPage('login') }} style={{ fontSize: '0.8em', color: 'white' }}>Already have an account? Log In</IonNote>
+                            <IonNote onClick={e => { e.preventDefault(); this.goToPage('login') }} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['signup']['login_btn']}</IonNote>
                         </div>
                     </div>
                 </IonContent>
@@ -162,9 +170,9 @@ class Signup extends Component {
     }
 }
 
-function mapStateToProps() {
+function mapStateToProps({ device }) {
     return {
-
+        lan: device ? device.language : 'en'
     }
 }
 

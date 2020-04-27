@@ -34,7 +34,6 @@ const data = {
     inbox: {
         'transactions_pending_approval': 'Transactions Pending Approval',
         'no_payments': 'No payment requests found'
-
     },
     menu: {
         'contacts': 'Contacts',
@@ -104,6 +103,57 @@ const data = {
         'date': 'Date',
         'confirm_btn': 'Confirm Payment',
         'reject_btn': 'Reject Payment'
+    },
+    confirm_tx: {
+        'confirm_tx_title': 'Confirm Payment',
+        'amount_to_transfer': 'Amount To Transfer',
+        'transfer_to': 'Transfer To',
+        'reason': 'Reason',
+        'description': 'Description',
+        'send_btn': 'Send',
+        'cancel_btn': 'Cancel'
+    },
+    tx_status: {
+        'tx_completed': 'Transaction Completed',
+        'tx': 'Transaction',
+        'successfully': 'Successfully',
+        'rejected': 'Rejected',
+        'your_transfer': 'Your transfer of JWS',
+        'completed_successfully': 'completed successfully',
+        'has_been_rejected': 'has been rejected',
+        'return_btn': 'Return'
+    },
+    intro: {
+        'login_btn': 'Log In',
+        'signup_btn': 'Sign Up',
+    },
+    login: {
+        'login_title': 'LOG IN',
+        'email': 'Email',
+        'password': 'Password',
+        'login_btn': 'Log In',
+        'forgot_password': 'Forgot your password?',
+        'create_account': 'Create a New Account'
+    },
+    signup: {
+        'signup_title': 'SIGN UP',
+        'first_name': 'First Name',
+        'last_name': 'Last Name',
+        'username': 'Username',
+        'email': 'Email',
+        'password': 'Password',
+        'rpassword': 'Repeat Password',
+        'signup_btn': 'Sig Up',
+        'login_btn': 'Already have an account? Log In'
+    },
+    error: {
+        'missing_required': 'Enter all the required fields',
+        'general': 'An error occurred, please try again',
+        'enter_valid_email': 'Enter a valid email',
+        'passwords_dont_match': 'The passwords do not match',
+        'select_contact': 'Select a contact to add',
+        'not_enough_balance': 'You do not have enough balance',
+        'enter_valid_amount': 'Enter a valid amount',
     }
 }
 

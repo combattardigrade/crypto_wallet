@@ -15,8 +15,14 @@ import { personCircleOutline } from 'ionicons/icons'
 // Styles
 import './styles-dark.css'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 // Images
-const logo = require('../images/logo.png')
+const logo = require('../components/logo.png')
 
 
 
@@ -25,11 +31,25 @@ class Intro extends Component {
     state = {
         showAlert: false,
         alertMsg: '',
-        alertTitle: ''
+        alertTitle: '',
+       
     }
 
     componentDidMount() {
-
+        try {
+            if (this.props.location.state.logout === true) {
+                const { state } = this.props.location
+                const stateCopy = { ...state }
+                delete stateCopy.logout
+                this.props.history.replace({ state: stateCopy })
+                setTimeout(() => {
+                    window.location.reload()
+                }, 100)
+            }
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     goToPage = (page) => {
@@ -37,12 +57,13 @@ class Intro extends Component {
         return
     }
 
-   
+
     render() {
+
+        const { lan } = this.props
+
         return (
             <IonPage>
-
-
                 <IonContent className="dark">
                     <div className=' authPage'>
                         <form style={{ width: '100%' }} >
@@ -52,30 +73,29 @@ class Intro extends Component {
                             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                                 <IonLabel className='authTitle'>JIWARDS WALLET</IonLabel>
                             </div>
-                            <IonGrid style={{marginTop:'30px'}}>
+                            <IonGrid style={{ marginTop: '30px' }}>
                                 <IonRow>
                                     <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                        <ion-button onClick={e => { e.preventDefault(); this.goToPage('login')}} color="light" expand="block" >Log In</ion-button>
+                                        <ion-button onClick={e => { e.preventDefault(); this.goToPage('login') }} color="light" expand="block" >{LOCALES[lan]['intro']['login_btn']}</ion-button>
                                     </IonCol>
                                 </IonRow>
                                 <IonRow >
-                                    <IonCol size="12" style={{marginTop:'-5px'}}>
-                                        <ion-button onClick={e => { e.preventDefault(); this.goToPage('signup')}} style={{marginTop:'-1px !important'}} color="dark" expand="block" >Sign up</ion-button>
+                                    <IonCol size="12" style={{ marginTop: '-5px' }}>
+                                        <ion-button onClick={e => { e.preventDefault(); this.goToPage('signup') }} style={{ marginTop: '-1px !important' }} color="dark" expand="block" >{LOCALES[lan]['intro']['signup_btn']}</ion-button>
                                     </IonCol>
-                                </IonRow>                                
+                                </IonRow>
                             </IonGrid>
-                        </form>                        
+                        </form>
                     </div>
                 </IonContent>
-                
             </IonPage>
         )
     }
 }
 
-function mapStateToProps() {
+function mapStateToProps({ device }) {
     return {
-
+        lan: device ? device.language : 'en'
     }
 }
 

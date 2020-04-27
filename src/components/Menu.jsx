@@ -56,12 +56,15 @@ class Menu extends Component {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(userLogout())
-    this.goToPage('login')
+    // this.goToPage('login')
   }
 
   render() {
     const { user, lan } = this.props
 
+    if(!lan) {
+      return 'Loading...'
+    }
 
     return (
       <IonMenu contentId="main" type="overlay" disabled={this.props.location.pathname !== '/main' ? true : false}>

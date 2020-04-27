@@ -18,6 +18,12 @@ import { sendInternalTx, getTxs } from '../utils/api'
 // Actions
 import { saveNewTx, saveTxs } from '../actions/transactions'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 const logoIcon = require('../components/logo_icon.png')
 
 class ConfirmTx extends Component {
@@ -65,7 +71,7 @@ class ConfirmTx extends Component {
 
     render() {
 
-        const { transfer } = this.props
+        const { transfer, lan } = this.props
 
         return (
             <IonPage>
@@ -75,7 +81,7 @@ class ConfirmTx extends Component {
                             <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn() }}><IonIcon icon={chevronBackOutline}></IonIcon></IonButton>
                             <IonMenuButton />
                         </IonButtons>
-                        <IonTitle>Confirm Transfer</IonTitle>
+                        <IonTitle>{LOCALES[lan]['confirm_tx']['confirm_tx_title']}</IonTitle>
 
                     </IonToolbar>
                 </IonHeader>
@@ -105,7 +111,7 @@ class ConfirmTx extends Component {
                                 </Media>
                                 <IonRow style={{ marginTop: '2vh' }}>
                                     <IonCol>
-                                        <IonLabel className="formInputTitle">Amount To Transfer</IonLabel>
+                                        <IonLabel className="formInputTitle">{LOCALES[lan]['confirm_tx']['amount_to_transfer']}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                                 <IonRow>
@@ -116,21 +122,21 @@ class ConfirmTx extends Component {
                                 </IonRow>
                                 <IonRow>
                                     <IonCol style={{ textAlign: 'center' }}>
-                                        <IonLabel className="formInputTitle">Transfer To</IonLabel>
+                                        <IonLabel className="formInputTitle">{LOCALES[lan]['confirm_tx']['transfer_to']}</IonLabel>
                                         <IonLabel>{transfer.contact.firstName + ' ' + transfer.contact.lastName}</IonLabel>
                                         <IonLabel>{transfer.contact.email}</IonLabel>
                                     </IonCol>
                                 </IonRow>
                                 <IonRow>
                                     <IonCol style={{ textAlign: 'center' }}>
-                                        <IonLabel className="formInputTitle">Reason</IonLabel>
+                                        <IonLabel className="formInputTitle">{LOCALES[lan]['confirm_tx']['reason']}</IonLabel>
                                         <IonLabel>{transfer.reason}</IonLabel>
 
                                     </IonCol>
                                 </IonRow>
                                 <IonRow>
                                     <IonCol style={{ textAlign: 'center' }}>
-                                        <IonLabel className="formInputTitle">Description</IonLabel>
+                                        <IonLabel className="formInputTitle">{LOCALES[lan]['confirm_tx']['description']}</IonLabel>
                                         <IonLabel>{transfer.description}</IonLabel>
 
                                     </IonCol>
@@ -143,8 +149,8 @@ class ConfirmTx extends Component {
                     <IonGrid style={{ bottom: '20px', position: 'absolute', width: '100%' }}>
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
-                                <IonButton onClick={e => { e.preventDefault(); this.handleSendBtn(); }} color="primary" expand="block" >SEND</IonButton>
-                                <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn() }} color="dark" expand="block" >Cancel </IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handleSendBtn(); }} color="primary" expand="block" >{LOCALES[lan]['confirm_tx']['send_btn']}</IonButton>
+                                <IonButton onClick={e => { e.preventDefault(); this.handleBackBtn() }} color="dark" expand="block" >{LOCALES[lan]['confirm_tx']['cancel_btn']}</IonButton>
 
                             </IonCol>
                         </IonRow>
@@ -155,10 +161,11 @@ class ConfirmTx extends Component {
     }
 }
 
-function mapStateToProps({ auth, transfer }) {
+function mapStateToProps({ auth, transfer, device }) {
     return {
         token: auth.token,
-        transfer
+        transfer,
+        lan: device ? device.language : 'en'
     }
 }
 

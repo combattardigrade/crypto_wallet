@@ -58,20 +58,20 @@ class Send extends Component {
     handleVerifyBtn = (e) => {
         e.preventDefault()
         const { contact, amount, reason, description } = this.state
-        const { user, contacts, history, dispatch } = this.props
+        const { user, contacts, history, dispatch, lan } = this.props
 
         if (!contact || !amount || !reason || !description) {
-            this.showAlert('Enter all the required fields', 'Error')
+            this.showAlert(LOCALES[lan]['error']['missing_required'], 'Error')
             return
         }
 
         if (parseFloat(user.balances[0].amount) < amount) {
-            this.showAlert('You do not have enough balance', 'Error')
+            this.showAlert(LOCALES[lan]['error']['not_enough_balance'], 'Error')
             return
         }
 
         if (isNaN(amount) || amount < 0) {
-            this.showAlert('Enter a valid amount', 'Error')
+            this.showAlert(LOCALES[lan]['error']['enter_valid_amount'], 'Error')
             return
         }
 

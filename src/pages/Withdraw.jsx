@@ -51,15 +51,15 @@ class Withdraw extends Component {
     handleWithdrawBtn = (e) => {
         e.preventDefault()
         const { address, amount } = this.state
-        const { token, dispatch } = this.props
+        const { token, lan } = this.props
 
         if (!address || !amount) {
-            this.showAlert('Enter all the required fields', 'Error')
+            this.showAlert(LOCALES[lan]['error']['missing_required'], 'Error')
             return
         }
 
         if(isNaN(amount) || amount < 0) {
-            this.showAlert('Enter a valid amount', 'Error')
+            this.showAlert(LOCALES[lan]['error']['enter_valid_amount'], 'Error')
             return
         }
 

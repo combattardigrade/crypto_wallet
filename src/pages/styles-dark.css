@@ -143,6 +143,7 @@ ion-tab-button {
 
 .authTitle {
     color: white;
+    font-weight: bold;
 }
 
 .dataTitle {

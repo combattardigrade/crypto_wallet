@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
 import {
     IonPage, IonIcon, IonGrid, IonRow, IonCol, withIonLifeCycle,
@@ -9,6 +10,12 @@ import {
     returnDownBackOutline,
 } from 'ionicons/icons'
 
+// Locales
+import en from '../locales/en'
+import fr from '../locales/fr'
+import nl from '../locales/nl'
+const LOCALES = { en, fr, nl }
+
 const successIcon = require('../components/success_icon.png')
 const errorIcon = require('../components/error_icon.png')
 
@@ -17,6 +24,7 @@ class TxStatus extends Component {
     render() {
 
         const { status } = this.props.match.params
+        const { lan } = this.props
 
         return (
             <IonPage>
@@ -36,10 +44,10 @@ class TxStatus extends Component {
                             <IonGrid>
                                 <IonRow>
                                     <IonCol size="12" style={{ textAlign: 'center' }}>
-                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? 'Transaction Completed' : 'Transaction'}</IonLabel>
-                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? 'Successfully' : 'Rejected'}</IonLabel>
-                                        <IonLabel style={{ color: '#d2d2d2', marginTop: '10px', fontSize: '12px', }}> Your transfer of JWS</IonLabel>
-                                        <IonLabel style={{ color: '#d2d2d2', fontSize: '12px' }}>  {status == 'OK' ? 'completed successfully' : 'has been rejected'}</IonLabel>
+                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? LOCALES[lan]['tx_status']['tx_completed'] : LOCALES[lan]['tx_status']['tx']}</IonLabel>
+                                        <IonLabel style={{ color: 'white', fontWeight: 'bold' }}>{status == 'OK' ? LOCALES[lan]['tx_status']['successfully'] : LOCALES[lan]['tx_status']['rejected']}</IonLabel>
+                                        <IonLabel style={{ color: '#d2d2d2', marginTop: '10px', fontSize: '12px', }}>{LOCALES[lan]['tx_status']['your_transfer']}</IonLabel>
+                                        <IonLabel style={{ color: '#d2d2d2', fontSize: '12px' }}>  {status == 'OK' ? LOCALES[lan]['tx_status']['completed_successfully'] : LOCALES[lan]['tx_status']['has_been_rejected'] }</IonLabel>
                                     </IonCol>
                                 </IonRow>
                             </IonGrid>
@@ -49,7 +57,7 @@ class TxStatus extends Component {
                         <IonRow>
                             <IonCol size="12" style={{ paddingBottom: '0px' }}>
                                 <ion-button color="primary" expand="block" onClick={e => { e.preventDefault(); this.props.history.replace({ pathname: '/main', state: { txCompleted: true } }); }} >
-                                    <IonIcon icon={returnDownBackOutline} style={{ marginRight: '5px' }}></IonIcon> Return
+                                    <IonIcon icon={returnDownBackOutline} style={{ marginRight: '5px' }}></IonIcon> {LOCALES[lan]['tx_status']['return_btn']}
                                 </ion-button>
                             </IonCol>
                         </IonRow>
@@ -60,4 +68,11 @@ class TxStatus extends Component {
     }
 }
 
-export default withIonLifeCycle(TxStatus)
+function mapStateToProps({ user, device }) {
+    return {
+        user,
+        lan: device ? device.language : 'en'
+    }
+}
+
+export default connect(mapStateToProps)(withIonLifeCycle(TxStatus))
