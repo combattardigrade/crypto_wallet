@@ -127,7 +127,7 @@ class Main extends Component {
         })
 
         PushNotifications.addListener('registrationError', (error) => {
-            console.log(error)            
+            console.log(error)
         })
 
         PushNotifications.addListener('pushNotificationReceived', (notification) => {
@@ -135,9 +135,17 @@ class Main extends Component {
             console.log(notification)
         })
 
-        PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+        PushNotifications.addListener('pushNotificationActionPerformed', (action) => {
             console.log('Push action performed: ')
-            console.log(notification)
+            console.log(action)
+
+            try {
+                if (action.notification.data.type === 'PAYMENT_REQUEST') {
+                    this.handleChangeTab('tab-inbox')
+                }
+            } catch (e) {
+                console.log(e)
+            }
         })
 
     }
@@ -153,7 +161,7 @@ class Main extends Component {
     handleChangeTab = (tab) => {
         // this.tabs.current.getSelected().then(tab => console.log(tab))
         this.tabsRef.current.select(tab)
-        const page = tab === 'tab-send' ? 'Send' : 'Wallet'
+        const page = tab === 'tab-send' ? 'Send' : tab === 'tab-inbox' ? 'Inbox' : 'Wallet'
         this.setState({ pageTitle: page })
     }
 
