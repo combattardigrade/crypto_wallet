@@ -10,7 +10,7 @@ const data = { main:
       wallet_withdraw_btn: 'Retirar',
       wallet_txs_all_btn: 'Todas',
       wallet_txs_received_btn: 'Recibido',
-      wallet_txs_sent_btn: 'Expedido' },
+      wallet_txs_sent_btn: 'Enviado' },
    rankings:
     { category: 'Categoría',
       year: 'Año',
@@ -33,7 +33,7 @@ const data = { main:
     { contacts: 'Contactos',
       deposit: 'Depositar',
       withdraw: 'Retirar',
-      settings: 'Configuraciones',
+      settings: 'Configuración',
       logout: 'Cerrar sesión' },
    contacts:
     { contacts_title: 'Contactos',
@@ -122,7 +122,7 @@ const data = { main:
       email: 'Correo electrónico',
       password: 'Contraseña',
       rpassword: 'Repite la contraseña',
-      signup_btn: 'Decir',
+      signup_btn: 'Crear cuenta',
       login_btn: '¿Ya tienes una cuenta? Iniciar sesión' },
    error:
     { missing_required: 'Ingrese todos los campos obligatorios',
