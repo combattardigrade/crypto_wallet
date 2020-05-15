@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { login } from '../utils/api'
-import { saveToken } from '../actions/auth'
 
 import {
     IonGrid, IonRow, IonCol, IonNote, IonItem, IonIcon,
@@ -11,9 +9,17 @@ import {
 } from '@ionic/react';
 import { personCircleOutline } from 'ionicons/icons'
 
-
 // Styles
 import './styles-dark.css'
+
+// API
+import { login, keycloakLogin, KEYCLOACK_CONFIG } from '../utils/api'
+
+// Actions
+import { saveToken } from '../actions/auth'
+
+// Plugins
+import { HTTP } from '@ionic-native/http'
 
 // Locales
 import en from '../locales/en'
@@ -24,6 +30,7 @@ import pt from '../locales/pt'
 import ja from '../locales/ja'
 import zh from '../locales/zh'
 const LOCALES = { en, fr, nl, es, pt, ja, zh }
+
 
 // Images
 const logo = require('../components/logo.png')
@@ -39,14 +46,14 @@ class Login extends Component {
     componentDidMount() {
         const { token } = this.props
 
-        if(token) {
+        if (token) {
             this.props.history.replace('/main')
             return
         }
     }
 
     goToPage = (page) => {
-        this.props.history.push(page)        
+        this.props.history.push(page)
         return
     }
 
@@ -61,31 +68,51 @@ class Login extends Component {
 
         const email = e.target.email.value
         const password = e.target.password.value
-        
+
         if (!email || !password) {
             this.showAlert(LOCALES[lan]['error']['missing_required'], 'Error')
             return
         }
 
-        let response
-        try {
-            response = await (await login({ email, password })).json()
-        }
-        catch (err) {
-            console.log(err)
-            this.showAlert(LOCALES[lan]['error']['general'], 'Error')
-            return
+        // Keycloak
+        let keycloakResponse
+
+
+        const params = {
+            ...KEYCLOACK_CONFIG,
+            username: email,
+            password
         }
 
-        if (response.status != 'OK') {
-            this.showAlert('message' in response ? response.message : LOCALES[lan]['error']['general'], 'Error')
-            return
-        }
-        // save jwt
-        this.props.dispatch(saveToken(response.token))
+        HTTP.post(KEYCLOACK_CONFIG.url, params, {})
+            .then(data => {           
+               
+                const res = JSON.parse(data.data)                
 
-        // redirect to dashboard
-        this.props.history.replace('/main')
+                keycloakLogin({ token: res.access_token })
+                    .then(data => data.json())
+                    .then((response) => {
+                        if (response.status != 'OK') {
+                            this.showAlert('message' in response ? response.message : LOCALES[lan]['error']['general'], 'Error')
+                            return
+                        }
+                        // save jwt
+                        this.props.dispatch(saveToken(response.token))
+
+                        // redirect to dashboard
+                        this.props.history.replace('/main')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        this.showAlert(LOCALES[lan]['error']['general'], 'Error')
+                        return
+                    })
+            })
+            .catch((err) => {
+                console.log(err)
+                this.showAlert(LOCALES[lan]['error']['general'], 'Error')
+                return
+            })
     }
 
     goToSignup = (e) => {
@@ -139,7 +166,7 @@ class Login extends Component {
                             </IonGrid>
                         </form>
                         <div style={{ bottom: '20px', position: 'absolute' }}>
-                            <IonNote onClick={e => {e.preventDefault(); this.goToPage('signup')}} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['create_account']}</IonNote>
+                            <IonNote onClick={e => { e.preventDefault(); this.goToPage('signup') }} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['create_account']}</IonNote>
                         </div>
                     </div>
                 </IonContent>

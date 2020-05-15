@@ -83,11 +83,11 @@ class Intro extends Component {
                                         <ion-button onClick={e => { e.preventDefault(); this.goToPage('login') }} color="light" expand="block" >{LOCALES[lan]['intro']['login_btn']}</ion-button>
                                     </IonCol>
                                 </IonRow>
-                                <IonRow >
+                                {/* <IonRow>
                                     <IonCol size="12" style={{ marginTop: '-5px' }}>
                                         <ion-button onClick={e => { e.preventDefault(); this.goToPage('signup') }} style={{ marginTop: '-1px !important' }} color="dark" expand="block" >{LOCALES[lan]['intro']['signup_btn']}</ion-button>
                                     </IonCol>
-                                </IonRow>
+                                </IonRow> */}
                             </IonGrid>
                         </form>
                     </div>

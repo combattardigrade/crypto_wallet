@@ -1,5 +1,14 @@
-// export const API = 'http://155.138.230.105:5000/api'
+// export const API = 'http://155.138.226.217:3001/api'
 export const API = 'http://genesisblock.ddns.net:3000/api'
+
+export const KEYCLOACK_CONFIG = {
+    'url': 'https://dev.pepper1.io:4443/auth/realms/pepper1/protocol/openid-connect/token',
+    'realm': 'pepper1',
+    'bearer-only': true,
+    'grant_type': 'password',
+    'client_id': 'jewards-client',
+    'client_secret': 'e42e43ae-ab93-42c0-8855-412d21e792a7'
+}
 
 export function login(params) {
     return fetch(API + '/login', {
@@ -157,6 +166,17 @@ export function withdrawTokens(params) {
 
 export function saveRegistrationKey(params) {
     return fetch(API + '/push/registrationId', {
+        method: 'POST',
+        body: JSON.stringify(params),
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + params.token
+        }
+    })
+}
+
+export function keycloakLogin(params) {    
+    return fetch(API + '/keycloakLogin', {
         method: 'POST',
         body: JSON.stringify(params),
         headers: {
