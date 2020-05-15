@@ -13,7 +13,7 @@ import { personCircleOutline } from 'ionicons/icons'
 import './styles-dark.css'
 
 // API
-import { login, keycloakLogin, KEYCLOACK_CONFIG } from '../utils/api'
+import { login, getKeycloakToken, keycloakLogin } from '../utils/api'
 
 // Actions
 import { saveToken } from '../actions/auth'
@@ -74,39 +74,32 @@ class Login extends Component {
             return
         }
 
-        // Keycloak
-        let keycloakResponse
+        getKeycloakToken({ email, password })
+            .then(data => data.json())
+            .then((res) => {
+                if (res.status === 'OK') {
+                    keycloakLogin({ token: res.token })
+                        .then(data => data.json())
+                        .then((res2) => {
+                            if (res2.status != 'OK') {
+                                this.showAlert('message' in res2 ? res2.message : LOCALES[lan]['error']['general'], 'Error')
+                                return
+                            }
+                            // save jwt
+                            this.props.dispatch(saveToken(res2.token))
 
-
-        const params = {
-            ...KEYCLOACK_CONFIG,
-            username: email,
-            password
-        }
-
-        HTTP.post(KEYCLOACK_CONFIG.url, params, {})
-            .then(data => {           
-               
-                const res = JSON.parse(data.data)                
-
-                keycloakLogin({ token: res.access_token })
-                    .then(data => data.json())
-                    .then((response) => {
-                        if (response.status != 'OK') {
-                            this.showAlert('message' in response ? response.message : LOCALES[lan]['error']['general'], 'Error')
+                            // redirect to dashboard
+                            this.props.history.replace('/main')
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            this.showAlert(LOCALES[lan]['error']['general'], 'Error')
                             return
-                        }
-                        // save jwt
-                        this.props.dispatch(saveToken(response.token))
-
-                        // redirect to dashboard
-                        this.props.history.replace('/main')
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                        this.showAlert(LOCALES[lan]['error']['general'], 'Error')
-                        return
-                    })
+                        })
+                } else {                   
+                    this.showAlert('message' in res ? res.message : LOCALES[lan]['error']['general'], 'Error')
+                    return
+                }
             })
             .catch((err) => {
                 console.log(err)
@@ -156,18 +149,18 @@ class Login extends Component {
                                     </IonCol>
                                 </IonRow>
 
-                                <IonRow style={{ marginTop: '5px' }}>
+                                {/* <IonRow style={{ marginTop: '5px' }}>
                                     <IonCol style={{ textAlign: 'center' }}>
                                         <IonButton fill="clear" >
                                             <IonNote onClick={this.goToSignup} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['forgot_password']}</IonNote>
                                         </IonButton>
                                     </IonCol>
-                                </IonRow>
+                                </IonRow> */}
                             </IonGrid>
                         </form>
-                        <div style={{ bottom: '20px', position: 'absolute' }}>
+                        {/* <div style={{ bottom: '20px', position: 'absolute' }}>
                             <IonNote onClick={e => { e.preventDefault(); this.goToPage('signup') }} style={{ fontSize: '0.8em', color: 'white' }}>{LOCALES[lan]['login']['create_account']}</IonNote>
-                        </div>
+                        </div> */}
                     </div>
                 </IonContent>
                 <IonAlert
