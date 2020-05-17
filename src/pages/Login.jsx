@@ -118,6 +118,8 @@ class Login extends Component {
 
         const { lan } = this.props
 
+        if(!lan) return
+
         return (
             <IonPage>
 

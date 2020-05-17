@@ -1,14 +1,5 @@
-// export const API = 'http://155.138.226.217:3001/api'
-export const API = 'http://genesisblock.ddns.net:3000/api'
-
-// export const KEYCLOACK_CONFIG = {
-//     'url': 'https://dev.pepper1.io:4443/auth/realms/pepper1/protocol/openid-connect/token',
-//     'realm': 'pepper1',
-//     'bearer-only': true,
-//     'grant_type': 'password',
-//     'client_id': 'jewards-client',
-//     'client_secret': 'e42e43ae-ab93-42c0-8855-412d21e792a7'
-// }
+export const API = 'http://155.138.226.217:3001/api'
+// export const API = 'http://genesisblock.ddns.net:3000/api'
 
 export function login(params) {
     return fetch(API + '/login', {
